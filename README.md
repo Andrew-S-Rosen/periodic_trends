@@ -7,7 +7,7 @@ This Python script can be used to plot a heat map over an image of the periodic 
 
 **Required Arguments**
 
-The only required argument is the `filename` argument. This is the full name (with extension) of the data file containing your periodic trend data. The data file must be in a comma-separated value (CSV) format with the first entry in each row being the atom symbol and the second entry being the value you wish to plot. The atomic symbol is not case-sensitive, and the elemental data can be put in any order. Any element not included in the CSV file will still be a default gray color. An example CSV file is included in this repository for testing purposes under the name `ionization_energies.csv`.
+The only required argument is the `filename` argument. This is the full name (with extension) of the data file containing your periodic trend data. The data file must be in a comma-separated value (CSV) format with the first entry in each row being the atom symbol and the second entry being the value you wish to plot. The atomic symbol is not case-sensitive, and the elemental data can be put in any order. Any element not included in the CSV file will still be a default gray color. An example CSV file is included in this repository for testing purposes under the name `ionization_energies.csv`. After the Python script is run, it will show the plot in your web browser (to save the image, simply click the save icon that appears in the web browser figure).
 
 **Optional Arguments**
 
