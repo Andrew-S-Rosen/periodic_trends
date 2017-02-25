@@ -56,7 +56,7 @@ optional arguments:
 Dependencies
 -----
 
-This script works for both Python 2.x and 3.x versions. The script requires following dependencies:
+This script works for both Python 2.x and 3.x versions. The script requires the following dependencies:
 * [Bokeh](http://bokeh.pydata.org/en/latest/)
 * [pandas](http://pandas.pydata.org/)
 * [matplotlib](http://matplotlib.org/)
