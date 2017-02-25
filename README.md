@@ -61,7 +61,7 @@ This script works for both Python 2.x and 3.x versions. The script requires the 
 * [pandas](http://pandas.pydata.org/)
 * [matplotlib](http://matplotlib.org/)
 
-These packages can be easily installed using [pip](https://pip.pypa.io/en/stable/) and the simple `pip install` command or through the `conda install` command if you have an [Anaconda distribution](https://www.continuum.io/downloads) of Python. with an already installed version of Python. The latter is the easiest option, in my opinion.
+These packages can be easily installed using [pip](https://pip.pypa.io/en/stable/) and the `pip install` command or through the `conda install` command if you have an [Anaconda distribution](https://www.continuum.io/downloads) of Python. The latter is the easiest option, in my opinion.
 
 Example
 -----
