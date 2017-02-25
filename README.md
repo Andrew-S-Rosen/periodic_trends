@@ -29,11 +29,11 @@ Dependencies
 -----
 
 This script works for both Python 2.x and 3.x versions. The script requires the following dependencies:
-* [Bokeh](http://bokeh.pydata.org/en/latest/)
-* [pandas](http://pandas.pydata.org/)
-* [matplotlib](http://matplotlib.org/)
+* [Bokeh](http://bokeh.pydata.org/en/latest/) (and its dependencies)
+* [pandas](http://pandas.pydata.org/) (and its dependencies)
+* [matplotlib](http://matplotlib.org/) (and its dependencies)
 
-These packages can be easily installed using [pip](https://pip.pypa.io/en/stable/) and the `pip install` command or through the `conda install` command if you have an [Anaconda distribution](https://www.continuum.io/downloads) of Python. The latter is the easiest option, in my opinion.
+These packages can be  installed using [pip](https://pip.pypa.io/en/stable/). However, since both Bokeh and matplotlib have multiple dependencies , it is much easier to install through the `conda install` command if you have an [Anaconda distribution](https://www.continuum.io/downloads) of Python. 
 
 Example
 -----
