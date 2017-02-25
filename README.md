@@ -23,7 +23,7 @@ Use the `--extended` flag followed by either 0 or 1 to select if you want the pe
 
 Use the `--cbar_height` flag followed by a positive integer to set the height (in pixels) of the color bar axis. The default is automatically chosen to be the full height of the figure.
 
-Typing `python ptable_trends.py --help` in the command line allows you see the aforementioned usage instructions.
+Use the `--help` flag in the command line to see the aforementioned usage instructions.
 
 Dependencies
 -----
