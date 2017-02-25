@@ -3,7 +3,7 @@ Python script to plot periodic trends as a heat map over the periodic table of e
 
 Usage
 -----
-This Python script can be used to plot a heat map over an image of the periodic table of elements for easy and automated visualization of periodic trends. The inputs are shown below. 
+This Python script can be used to plot a heat map over an image of the periodic table of elements for easy and automated visualization of periodic trends. The required input and arguments are shown below. 
 
 **Required Arguments**
 
