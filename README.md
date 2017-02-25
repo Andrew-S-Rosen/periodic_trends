@@ -38,7 +38,16 @@ These packages can be easily installed using [pip](https://pip.pypa.io/en/stable
 Example
 -----
 
-I show below some examples of the script in action using the `ionization_energies.csv` file included in this repository.
+I show below some examples of the script in action using the `ionization_energies.csv` file included in this repository. Note that since the CSV file contains data for some of the lanthanides and actinides, the value of `--extended` defaults to 1 (instead of the usual 0) unless manually set otherwise.
 
 `python ptable_trends.py ionization_energies.csv`
 
+![plot1](http://i.imgur.com/Uxb8V0p.png)
+
+`python ptable_trends.py ionization_energies.csv --extended 0`
+
+![plot2](http://i.imgur.com/Att5d9X.png)
+
+`python ptable_trends.py ionization_energies.csv --extended 0 --width 1100 --palette_choice 3 --fill_alpha 0.9`
+
+![plot3](http://i.imgur.com/KJnlriu.png)
