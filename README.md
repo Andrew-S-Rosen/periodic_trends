@@ -23,35 +23,7 @@ Use the `--extended` flag followed by either 0 or 1 to select if you want the pe
 
 Use the `--cbar_height` flag followed by a positive integer to set the height (in pixels) of the color bar axis. The default is automatically chosen to be the full height of the figure.
 
-Typing `python ptable_trends.py --help` in the command line allows you see the aforementioned usage instructions, replicated below.
-
-```
-usage: ptable_trends.py [-h] [--width WIDTH]                            
-                              [--palette_choice {0,1,2,3}]                    
-                              [--fill_alpha FILL_ALPHA] [--extended {0,1}]    
-                              [--cbar_height CBAR_HEIGHT]                     
-                              filename                                        
-                                                                              
-Plot periodic trends as a heat map over the periodic table of elements        
-                                                                              
-positional arguments:                                                         
-  filename              Filename (with extension) of CSV-formatted data       
-                                                                              
-optional arguments:                                                           
-  -h, --help            show this help message and exit                       
-  --width WIDTH         Width (in pixels) of figure                           
-  --palette_choice {0,1,2,3}                                                  
-                        Color palette choice: 0 = Plasma, 1 = Inferno, 2 =    
-                        Magma, 3 = Viridis                                    
-  --fill_alpha FILL_ALPHA                                                     
-                        Alpha value for color scale (ranges from 0 to 1)      
-  --extended {0,1}      Keyword for excluding (0) or including (1) the        
-                        lanthanides and actinides (will automatically enable  
-                        if lanthanides or actinides are present in the dataset
-  --cbar_height CBAR_HEIGHT                                                   
-                        Height (in pixels) of color bar
-```
-
+Typing `python ptable_trends.py --help` in the command line allows you see the aforementioned usage instructions.
 
 Dependencies
 -----
