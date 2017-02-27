@@ -15,11 +15,13 @@ There are a number of optional arguments that can be used to quickly change sett
 
 Use the `--width` flag followed by a positive integer to set the width (in pixels) of the figure. The default is a width of 1050 pixels. 
 
-Use the `--palette_choice` flag followed by an integer ranging from 0 to 3 to select one of the default color maps. A value of 0 is the default and selects the [plasma](https://bids.github.io/colormap/images/screenshots/option_c.png) color map, a value of 1 selects the [inferno](https://bids.github.io/colormap/images/screenshots/option_b.png) color map, a value of 2 selects the [magma](https://bids.github.io/colormap/images/screenshots/option_a.png) color map, and a value of 3 selects the [viridis](https://bids.github.io/colormap/images/screenshots/option_d.png) color map. 
+Use the `--cmap_choice` flag followed by an integer ranging from 0 to 3 to select one of the default color maps. A value of 0 is the default and selects the [plasma](https://bids.github.io/colormap/images/screenshots/option_c.png) color map, a value of 1 selects the [inferno](https://bids.github.io/colormap/images/screenshots/option_b.png) color map, a value of 2 selects the [magma](https://bids.github.io/colormap/images/screenshots/option_a.png) color map, and a value of 3 selects the [viridis](https://bids.github.io/colormap/images/screenshots/option_d.png) color map. 
 
-Use the `--fill_alpha` flag followed by a float ranging from 0 to 1 to select the RGBA alpha value (a measure of the transparency). The default alpha value is 0.85.
+Use the `--alpha` flag followed by a float ranging from 0 to 1 to select the RGBA alpha value (a measure of the transparency). The default alpha value is 0.85.
 
-Use the `--extended` flag followed by either 0 or 1 to select if you want the periodic table to include the lanthanides and actinides. The default value is 0 (don't show lanthanides and actinides). However, if your CSV file contains data for any of the lanthanides or actinides, these rows on the table will automatically be included (unless you manually specify `--extended 0`).
+Use the `--extended` flag followed by either 0 or 1 to select if you want the periodic table to include the rows corresponding to the lanthanides and actinides. The default value is either 0 (don't show) or 1 (do show) depending on if there are lanthanide or actinide elements in the CSV file.
+
+Use the `--cbar_scale` flag followed by a either 0 or 1 to select if you want a linearized (0) color map and color bar or loagrithmic (1) color map and color bar. The default is 0 for a linearized scale.
 
 Use the `--cbar_height` flag followed by a positive integer to set the height (in pixels) of the color bar axis. The default is automatically chosen to be the full height of the figure.
 
@@ -48,6 +50,6 @@ I show below some examples of the script in action using the `ionization_energie
 
 ![plot2](http://i.imgur.com/Att5d9X.png)
 
-`python ptable_trends.py ionization_energies.csv --extended 0 --width 1100 --palette_choice 3 --fill_alpha 0.9`
+`python ptable_trends.py ionization_energies.csv --extended 0 --width 1100 --cmap_choice 3 --alpha 0.9`
 
 ![plot3](http://i.imgur.com/KJnlriu.png)
