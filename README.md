@@ -50,6 +50,10 @@ I show below some examples of the script in action using the `ionization_energie
 
 ![plot2](http://i.imgur.com/Att5d9X.png)
 
-`python ptable_trends.py ionization_energies.csv --extended 0 --width 1100 --cmap_choice 3 --alpha 0.9`
+`python ptable_trends.py ionization_energies.csv --extended 0 --cbar_scale 1`
 
-![plot3](http://i.imgur.com/KJnlriu.png)
+![plot3](http://i.imgur.com/Xt3oW6q.png)
+
+`python ptable_trends.py ionization_energies.csv --extended 0 --cmap_choice 3 --alpha 0.7`
+
+![plot4](http://i.imgur.com/52IBhVm.png)
