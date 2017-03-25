@@ -127,7 +127,7 @@ if log_scale == 0:
 elif log_scale == 1:
 	for i in range(len(data)):
 		if data[i] < 0:
-			print('ERROR: Entry for element '+data_elements[i]+' is negative but'
+			raise ValueError('Entry for element '+data_elements[i]+' is negative but'
 			' log-scale is selected')
 	color_mapper = LogColorMapper(palette = bokeh_palette, low=min(data), 
 		high=max(data))
