@@ -1,11 +1,12 @@
+from __future__ import absolute_import
 from bokeh.models import (ColumnDataSource, LinearColorMapper, LogColorMapper, 
 	ColorBar, BasicTicker)
 from bokeh.plotting import figure, show
-from bokeh.sampledata.periodic_table import elements
 from csv import reader
-from pandas import options
 from matplotlib.colors import Normalize, LogNorm, to_hex
-import matplotlib.cm as cm
+from matplotlib.cm import plasma, inferno, magma, viridis, ScalarMappable
+from os.path import dirname, join
+from pandas import read_csv, options
 import argparse
 options.mode.chained_assignment = None
 
@@ -50,27 +51,20 @@ if cbar_height is not None and cbar_height < 0:
 
 #Assign color palette based on input argument
 if cmap_choice == 0:
-	cmap = cm.plasma
+	cmap = plasma
 	bokeh_palette = 'Plasma256'
 elif cmap_choice == 1:
-	cmap = cm.inferno
+	cmap = inferno
 	bokeh_palette = 'Inferno256'
 elif cmap_choice == 2:
-	cmap = cm.magma
+	cmap = magma
 	bokeh_palette = 'Magma256'
 elif cmap_choice == 3:
-	cmap = cm.viridis
+	cmap = viridis
 	bokeh_palette = 'Viridis256'
 
-#Add new element names and symbols to bokeh elements
-elements.name[112] = 'Nihomium'
-elements.symbol[112] = 'Nh'
-elements.name[114] = 'Moscovium'
-elements.symbol[114] = 'Mc'
-elements.name[116] = 'Tenessine'
-elements.symbol[116] = 'Ts'
-elements.name[117] = 'Oganesson'
-elements.symbol[117] = 'Og'
+#Import elements
+elements = read_csv(join(dirname(__file__), 'elements.csv'))
 
 #Define the lanthanides and actinides in bokeh elements
 lanthanides = [x.lower() for x in elements['symbol'][56:70].tolist()]
@@ -132,7 +126,7 @@ elif log_scale == 1:
 	color_mapper = LogColorMapper(palette = bokeh_palette, low=min(data), 
 		high=max(data))
 	norm = LogNorm(vmin = min(data), vmax = max(data))
-color_scale = cm.ScalarMappable(norm=norm, cmap=cmap).to_rgba(data,alpha=None)
+color_scale = ScalarMappable(norm=norm, cmap=cmap).to_rgba(data,alpha=None)
 
 #Define color for blank entries
 blank_color = '#c4c4c4'
