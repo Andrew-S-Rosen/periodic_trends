@@ -24,7 +24,7 @@ parser.add_argument('--extended',type=int,choices=range(0,2),help='Keyword for '
 	'excluding (0) or including (1) the lanthanides and actinides (will '
 	'automatically enable if lanthanides or actinides are present in the '
 	'dataset')
-parser.add_argument('--cbar_scale',type=int,default=0,choices=range(0,2),
+parser.add_argument('--log_scale',type=int,default=0,choices=range(0,2),
 	help='Keyword for linear (0) or logarithmic (1) color bar')
 parser.add_argument('--cbar_height',type=int,help='Height (in pixels) of color '
 	'bar')
@@ -35,7 +35,7 @@ width = args.width
 cmap_choice = args.cmap_choice
 alpha = args.alpha
 extended = args.extended
-cbar_scale = args.cbar_scale
+log_scale = args.log_scale
 cbar_height = args.cbar_height
 
 #Error handling
@@ -73,19 +73,39 @@ elements.name[117] = 'Oganesson'
 elements.symbol[117] = 'Og'
 
 #Define the lanthanides and actinides in bokeh elements
-lanthanides = [x.lower() for x in elements["symbol"][56:70].tolist()]
-actinides = [x.lower() for x in elements["symbol"][88:102].tolist()]
+lanthanides = [x.lower() for x in elements['symbol'][56:70].tolist()]
+actinides = [x.lower() for x in elements['symbol'][88:102].tolist()]
 
 #Define number of and groups
-period_label = ["1", "2", "3", "4", "5", "6", "7"]
+period_label = ['1', '2', '3', '4', '5', '6', '7']
 group_range = [str(x) for x in range(1, 19)]
+
+#Read in data from CSV file
+data_elements = []
+data_list = []
+for row in reader(open(filename)):
+	data_elements.append(row[0])
+	data_list.append(row[1])
+data = [float(i) for i in data_list]
+
+if len(data) != len(data_elements):
+	raise ValueError('Unequal number of atomic elements and data points')
+
+#Flag any lanthanides and actinides in dataset
+if args.extended is None:
+	for i in range(len(data)):
+	    lanthanide_flag = data_elements[i].lower() in lanthanides
+	    actinide_flag = data_elements[i].lower() in actinides
+	    if lanthanide_flag == True or actinide_flag == True:
+	        extended = 1
+	        break
 
 #Define pseudo period number and group number for lanthanides and actinides if
 #user requests extended table
 if extended == 1:
-	period_label.append("blank")
-	period_label.append("La")
-	period_label.append("Ac")
+	period_label.append('blank')
+	period_label.append('La')
+	period_label.append('Ac')
 
 	count = 0
 	for i in range(56,70):
@@ -99,32 +119,16 @@ if extended == 1:
 	    elements.group[i] = str(count+4)
 	    count += 1
 
-#Read in data from CSV file
-data_elements = []
-data_list = []
-for row in reader(open(filename)):
-	data_elements.append(row[0])
-	data_list.append(row[1])
-data = [float(i) for i in data_list]
-
-if len(data) != len(data_elements):
-	print("ERROR: Unequal number of atomic elements and data points")
-
-#Flag any lanthanides and actinides in dataset
-if args.extended is None:
-	for i in range(len(data)):
-	    lanthanide_flag = data_elements[i].lower() in lanthanides
-	    actinide_flag = data_elements[i].lower() in actinides
-	    if lanthanide_flag == True or actinide_flag == True:
-	        extended = 1
-	        break
-
 #Define matplotlib and bokeh color map
-if cbar_scale == 0:
+if log_scale == 0:
 	color_mapper = LinearColorMapper(palette = bokeh_palette, low=min(data), 
 		high=max(data))
 	norm = Normalize(vmin = min(data), vmax = max(data))
-elif cbar_scale == 1:
+elif log_scale == 1:
+	for i in range(len(data)):
+		if data[i] < 0:
+			print('ERROR: Entry for element '+data_elements[i]+' is negative but'
+			' log-scale is selected')
 	color_mapper = LogColorMapper(palette = bokeh_palette, low=min(data), 
 		high=max(data))
 	norm = LogNorm(vmin = min(data), vmax = max(data))
@@ -138,18 +142,24 @@ for i in range(len(elements)):
 
 #Compare elements in dataset with elements in periodic table
 for i in range(len(data)):
-	element_index = elements.symbol[elements.symbol.str.lower() == data_elements[i].lower()].index[0]
+	element_entry = elements.symbol[elements.symbol.str.lower() == data_elements[i].lower()]
+	if element_entry.empty == False:
+		element_index = element_entry.index[0]
+	else:
+		print('WARNING: Invalid chemical symbol: '+data_elements[i])
+	if color_list[element_index] != blank_color:
+		print('WARNING: Multiple entries for element '+data_elements[i])
 	color_list[element_index] = to_hex(color_scale[i])
 
 #Define figure properties for visualizing data
 source = ColumnDataSource(
     data=dict(
-        group=[str(x) for x in elements["group"]],
-        period=[str(y) for y in elements["period"]],
-        symx=[str(x)+":0.1" for x in elements["group"]],
-        numbery=[str(x)+":0.8" for x in elements["period"]],
-        sym=elements["symbol"],
-        atomic_number=elements["atomic number"],
+        group=[str(x) for x in elements['group']],
+        period=[str(y) for y in elements['period']],
+        symx=[str(x)+':0.1' for x in elements['group']],
+        numbery=[str(x)+':0.8' for x in elements['period']],
+        sym=elements['symbol'],
+        atomic_number=elements['atomic number'],
         type_color=color_list,
     )
 )
@@ -160,20 +170,20 @@ p = figure(x_range=group_range, y_range=list(reversed(period_label)),
 p.plot_width = width
 p.outline_line_color = None
 p.toolbar_location='above'
-p.rect("group", "period", 0.9, 0.9, source=source,
-       alpha=alpha, color="type_color")
+p.rect('group', 'period', 0.9, 0.9, source=source,
+       alpha=alpha, color='type_color')
 p.axis.visible = False
 text_props = {
-    "source": source,
-    "angle": 0,
-    "color": "black",
-    "text_align": "left",
-    "text_baseline": "middle"
+    'source': source,
+    'angle': 0,
+    'color': 'black',
+    'text_align': 'left',
+    'text_baseline': 'middle'
 }
-p.text(x="symx", y="period", text="sym",
-       text_font_style="bold", text_font_size="15pt", **text_props)
-p.text(x="symx", y="numbery", text="atomic_number",
-       text_font_size="9pt", **text_props)
+p.text(x='symx', y='period', text='sym',
+       text_font_style='bold', text_font_size='15pt', **text_props)
+p.text(x='symx', y='numbery', text='atomic_number',
+       text_font_size='9pt', **text_props)
 color_bar = ColorBar(color_mapper=color_mapper,
 	ticker=BasicTicker(desired_num_ticks=10),border_line_color=None,
 	label_standoff=6,location=(0,0),orientation='vertical',

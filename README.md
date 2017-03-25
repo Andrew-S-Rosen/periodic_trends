@@ -21,7 +21,7 @@ Use the `--alpha` flag followed by a float ranging from 0 to 1 to select the RGB
 
 Use the `--extended` flag followed by either 0 or 1 to select if you want the periodic table to include the rows corresponding to the lanthanides and actinides. The default value is either 0 (don't show) or 1 (do show) depending on if there are lanthanide or actinide elements in the CSV file.
 
-Use the `--cbar_scale` flag followed by a either 0 or 1 to select if you want a linearized (0) color map and color bar or loagrithmic (1) color map and color bar. The default is 0 for a linearized scale.
+Use the `--log_scale` flag followed by a either 0 or 1 to select if you want a linearized (0) color map and color bar or loagrithmic (1) color map and color bar. The default is 0 for a linearized scale.
 
 Use the `--cbar_height` flag followed by a positive integer to set the height (in pixels) of the color bar axis. The default is automatically chosen to be the full height of the figure.
 
@@ -50,7 +50,7 @@ I show below some examples of the script in action using the `ionization_energie
 
 ![plot2](http://i.imgur.com/Att5d9X.png)
 
-`python ptable_trends.py ionization_energies.csv --extended 0 --cbar_scale 1`
+`python ptable_trends.py ionization_energies.csv --extended 0 --log_scale 1`
 
 ![plot3](http://i.imgur.com/Xt3oW6q.png)
 
