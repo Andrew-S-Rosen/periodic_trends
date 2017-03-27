@@ -3,11 +3,11 @@ Python script to plot periodic trends as a heat map over the periodic table of e
 
 Usage
 -----
-This Python script can be used to plot a heat map over an image of the periodic table of elements for easy and automated visualization of periodic trends. The required input and arguments are shown below. 
+This Python script (`ptable_trends.py`) can be used to plot a heat map over an image of the periodic table of elements for easy and automated visualization of periodic trends. The required input and arguments are shown below.
 
 **Required Arguments**
 
-The only required argument is the `filename` argument. This is the full name (with extension) of the data file containing your periodic trend data. The data file must be in a comma-separated value (CSV) format with the first entry in each row being the atom symbol and the second entry being the value you wish to plot. The atomic symbol is not case-sensitive, and the elemental data can be put in any order. Any element not included in the CSV file will still be a default gray color. An example CSV file is included in this repository for testing purposes under the name `ionization_energies.csv`. After the Python script is run, it will show the plot in your web browser (to save the image, simply click the save icon that appears in the web browser figure).
+The only required argument is the `filename` argument. This is the full name (with extension) of the data file containing your periodic trend data. The data file must be in a comma-separated value (CSV) format with the first entry in each row being the atom symbol and the second entry being the value you wish to plot. The atomic symbol is not case-sensitive, and the elemental data can be put in any order. Any element not included in the CSV file will be a default gray color. An example CSV file is included in this repository for testing purposes under the name `ionization_energies.csv`. After the `ptable_trends.py` script is run, it will show the plot in your web browser. To save the image, simply click the save icon that appears in the web browser figure.
 
 **Optional Arguments**
 
@@ -27,33 +27,43 @@ Use the `--cbar_height` flag followed by a positive integer to set the height (i
 
 Use the `--help` flag to see the aforementioned usage instructions.
 
+**Other information**
+
+Ensure that the `elements.csv` file is in the same directory as `ptable_trends.py`. The `elements.csv` file contains information that `ptable_trends.py` needs in order to construct the periodic table of elements (e.g. chemical names, symbols, atomic numbers). This does not need to be edited by the user. Your periodic trend data should be saved as a separated CSV file, like the example `ionization_energies.csv` file.
+
 Dependencies
 -----
 
-This script works for both Python 2.x and 3.x versions. The script requires the following dependencies:
+This script is compatible with both Python 2.x and 3.x versions. The script requires the following dependencies:
 * [Bokeh](http://bokeh.pydata.org/en/latest/) (and its dependencies)
 * [pandas](http://pandas.pydata.org/) (and its dependencies)
 * [matplotlib](http://matplotlib.org/) (and its dependencies)
 
-These packages can be  installed using [pip](https://pip.pypa.io/en/stable/). However, since both Bokeh and matplotlib have multiple dependencies, it is much easier to install through the `conda install` command if you have an [Anaconda distribution](https://www.continuum.io/downloads) of Python. 
+These packages can be installed using [pip](https://pip.pypa.io/en/stable/). However, since both Bokeh and matplotlib have multiple dependencies, it is much easier to install through the `conda install` command if you have an [Anaconda distribution](https://www.continuum.io/downloads) of Python. 
 
-Example
+Examples
 -----
 
 I show below some examples of the script in action using the `ionization_energies.csv` file included in this repository. Note that since the CSV file contains data for some of the lanthanides and actinides, the value of `--extended` defaults to 1 (instead of the usual 0) unless manually set otherwise.
 
+---
+
 `python ptable_trends.py ionization_energies.csv`
 
 ![plot1](http://i.imgur.com/Uxb8V0p.png)
+---
 
 `python ptable_trends.py ionization_energies.csv --extended 0`
 
 ![plot2](http://i.imgur.com/Att5d9X.png)
+---
 
 `python ptable_trends.py ionization_energies.csv --extended 0 --log_scale 1`
 
 ![plot3](http://i.imgur.com/Xt3oW6q.png)
+---
 
 `python ptable_trends.py ionization_energies.csv --extended 0 --cmap_choice 3 --alpha 0.7`
 
 ![plot4](http://i.imgur.com/52IBhVm.png)
+---
