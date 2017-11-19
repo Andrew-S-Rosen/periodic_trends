@@ -4,13 +4,11 @@ from bokeh.models import (ColumnDataSource, LinearColorMapper, LogColorMapper,
 from bokeh.plotting import figure
 from bokeh.io import output_file, show
 from bokeh.transform import dodge
+from bokeh.sampledata.periodic_table import elements
 from csv import reader
 from matplotlib.colors import Normalize, LogNorm, to_hex
 from matplotlib.cm import plasma, inferno, magma, viridis, ScalarMappable
-from os.path import dirname, join
-from pandas import read_csv, options
 import argparse
-options.mode.chained_assignment = None
 
 output_file('periodic_trends.html')
 
@@ -66,9 +64,6 @@ elif cmap_choice == 2:
 elif cmap_choice == 3:
 	cmap = viridis
 	bokeh_palette = 'Viridis256'
-
-#Import elements
-elements = read_csv(join(dirname(__file__), 'elements.csv'))
 
 #Define the lanthanides and actinides in bokeh elements
 lanthanides = [x.lower() for x in elements['symbol'][56:70].tolist()]
