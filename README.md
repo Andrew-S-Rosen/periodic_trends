@@ -37,17 +37,9 @@ These packages can be installed using [pip](https://pip.pypa.io/en/stable/). How
 Examples
 -----
 
-I show below some examples of the script in action using the `ionization_energies.csv` file included in this repository.
----
-
 `python ptable_trends.py ionization_energies.csv`
 
 ![plot1](http://i.imgur.com/Uxb8V0p.png)
----
-
-`python ptable_trends.py ionization_energies.csv`
-
-![plot2](http://i.imgur.com/Att5d9X.png)
 ---
 
 `python ptable_trends.py ionization_energies.csv --log_scale 1`
