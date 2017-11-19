@@ -25,10 +25,6 @@ parser.add_argument('--cmap_choice',type=int,default=0,choices=range(0,4),
 	help='Color palette choice: 0 = Plasma, 1 = Inferno, 2 = Magma, 3 = Viridis')
 parser.add_argument('--alpha',type=float,default=0.65,help='Alpha value '
 	'for color scale (ranges from 0 to 1)')
-parser.add_argument('--extended',type=int,choices=range(0,2),help='Keyword for '
-	'excluding (0) or including (1) the lanthanides and actinides (will '
-	'automatically enable if lanthanides or actinides are present in the '
-	'dataset')
 parser.add_argument('--log_scale',type=int,default=0,choices=range(0,2),
 	help='Keyword for linear (0) or logarithmic (1) color bar')
 parser.add_argument('--cbar_height',type=int,help='Height (in pixels) of color '
@@ -39,7 +35,6 @@ filename = args.filename
 width = args.width
 cmap_choice = args.cmap_choice
 alpha = args.alpha
-extended = args.extended
 log_scale = args.log_scale
 cbar_height = args.cbar_height
 
@@ -86,33 +81,21 @@ data = [float(i) for i in data_list]
 if len(data) != len(data_elements):
 	raise ValueError('Unequal number of atomic elements and data points')
 
-#Flag any lanthanides and actinides in dataset
-if args.extended is None or args.extended == 0:
-	for i in range(len(data)):
-	    lanthanide_flag = data_elements[i].lower() in lanthanides
-	    actinide_flag = data_elements[i].lower() in actinides
-	    if lanthanide_flag == True or actinide_flag == True:
-	        extended = 1
-	        break
+period_label.append('blank')
+period_label.append('La')
+period_label.append('Ac')
 
-#Define pseudo period number and group number for lanthanides and actinides if
-#user requests extended table
-if extended == 1:
-	period_label.append('blank')
-	period_label.append('La')
-	period_label.append('Ac')
+count = 0
+for i in range(56,70):
+    elements.period[i] = 'La'
+    elements.group[i] = str(count+4)
+    count += 1
 
-	count = 0
-	for i in range(56,70):
-	    elements.period[i] = 'La'
-	    elements.group[i] = str(count+4)
-	    count += 1
-
-	count = 0
-	for i in range(88,102):
-	    elements.period[i] = 'Ac'
-	    elements.group[i] = str(count+4)
-	    count += 1
+count = 0
+for i in range(88,102):
+    elements.period[i] = 'Ac'
+    elements.group[i] = str(count+4)
+    count += 1
 
 #Define matplotlib and bokeh color map
 if log_scale == 0:
@@ -151,11 +134,9 @@ source = ColumnDataSource(
     data=dict(
         group=[str(x) for x in elements['group']],
         period=[str(y) for y in elements['period']],
-        symx=[str(x)+':0.1' for x in elements['group']],
-        numbery=[str(x)+':0.8' for x in elements['period']],
         sym=elements['symbol'],
         atomic_number=elements['atomic number'],
-        type_color=color_list,
+        type_color=color_list
     )
 )
 
