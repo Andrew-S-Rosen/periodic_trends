@@ -1,7 +1,9 @@
 from __future__ import absolute_import
 from bokeh.models import (ColumnDataSource, LinearColorMapper, LogColorMapper, 
 	ColorBar, BasicTicker)
-from bokeh.plotting import figure, show
+from bokeh.plotting import figure
+from bokeh.io import output_file, show
+from bokeh.transform import dodge
 from csv import reader
 from matplotlib.colors import Normalize, LogNorm, to_hex
 from matplotlib.cm import plasma, inferno, magma, viridis, ScalarMappable
@@ -9,6 +11,8 @@ from os.path import dirname, join
 from pandas import read_csv, options
 import argparse
 options.mode.chained_assignment = None
+
+output_file('periodic_trends.html')
 
 #Parse arguments
 parser = argparse.ArgumentParser(description='Plot periodic trends as a heat '
@@ -115,14 +119,14 @@ if extended == 1:
 
 #Define matplotlib and bokeh color map
 if log_scale == 0:
-	color_mapper = LinearColorMapper(palette = bokeh_palette, low=min(data), 
+	color_mapper = LinearColorMapper(palette=bokeh_palette, low=min(data), 
 		high=max(data))
 	norm = Normalize(vmin = min(data), vmax = max(data))
 elif log_scale == 1:
 	for i in range(len(data)):
 		if data[i] < 0:
-			raise ValueError('Entry for element '+data_elements[i]+' is negative but'
-			' log-scale is selected')
+			raise ValueError('Entry for element '+data_elements[i]+
+				' is negative but log-scale is selected')
 	color_mapper = LogColorMapper(palette = bokeh_palette, low=min(data), 
 		high=max(data))
 	norm = LogNorm(vmin = min(data), vmax = max(data))
@@ -136,7 +140,8 @@ for i in range(len(elements)):
 
 #Compare elements in dataset with elements in periodic table
 for i in range(len(data)):
-	element_entry = elements.symbol[elements.symbol.str.lower() == data_elements[i].lower()]
+	element_entry = (elements.symbol[elements.symbol.str.lower() == 
+		data_elements[i].lower()])
 	if element_entry.empty == False:
 		element_index = element_entry.index[0]
 	else:
@@ -146,17 +151,13 @@ for i in range(len(data)):
 	color_list[element_index] = to_hex(color_scale[i])
 
 #Define figure properties for visualizing data
-source = ColumnDataSource(
-    data=dict(
-        group=[str(x) for x in elements['group']],
-        period=[str(y) for y in elements['period']],
-        symx=[str(x)+':0.1' for x in elements['group']],
-        numbery=[str(x)+':0.8' for x in elements['period']],
-        sym=elements['symbol'],
-        atomic_number=elements['atomic number'],
-        type_color=color_list,
-    )
-)
+df = elements.copy()
+df['group'] = [str(x) for x in elements['group']]
+df['period'] = [str(y) for y in elements['period']]
+df['symbol'] = elements['symbol']
+df['atomic number'] = elements['atomic number']
+df['type_color'] = color_list
+source = ColumnDataSource(df)
 
 #Plot the periodic table
 p = figure(x_range=group_range, y_range=list(reversed(period_label)),
@@ -164,8 +165,8 @@ p = figure(x_range=group_range, y_range=list(reversed(period_label)),
 p.plot_width = width
 p.outline_line_color = None
 p.toolbar_location='above'
-p.rect('group', 'period', 0.9, 0.9, source=source,
-       alpha=alpha, color='type_color')
+p.rect('group', 'period', 0.9, 0.9, source=source, alpha=alpha,
+	color='type_color')
 p.axis.visible = False
 text_props = {
     'source': source,
@@ -174,10 +175,13 @@ text_props = {
     'text_align': 'left',
     'text_baseline': 'middle'
 }
-p.text(x='symx', y='period', text='sym',
-       text_font_style='bold', text_font_size='15pt', **text_props)
-p.text(x='symx', y='numbery', text='atomic_number',
-       text_font_size='9pt', **text_props)
+x = dodge("group", -0.4, range=p.x_range)
+r = p.text(x=x, y='period', text='symbol', **text_props)
+r.glyph.text_font_size='15pt'
+r.glyph.text_font_style='bold'
+y = dodge("period", 0.3, range=p.y_range)
+r = p.text(x=x, y=y, text='atomic number',**text_props)
+r.glyph.text_font_size='9pt'
 color_bar = ColorBar(color_mapper=color_mapper,
 	ticker=BasicTicker(desired_num_ticks=10),border_line_color=None,
 	label_standoff=6,location=(0,0),orientation='vertical',
