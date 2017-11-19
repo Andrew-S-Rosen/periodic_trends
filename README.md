@@ -44,10 +44,10 @@ Examples
 
 `python ptable_trends.py ionization_energies.csv --log_scale 1`
 
-![plot3](http://i.imgur.com/Xt3oW6q.png)
+![plot2](https://i.imgur.com/jT2Msqd.png)
 ---
 
 `python ptable_trends.py ionization_energies.csv --cmap_choice 3 --alpha 0.7`
 
-![plot4](http://i.imgur.com/52IBhVm.png)
+![plot3](https://i.imgur.com/nrUsg3v.png)
 ---
