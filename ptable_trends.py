@@ -12,7 +12,7 @@ from pandas import options
 import argparse
 options.mode.chained_assignment = None
 
-output_file('periodic_trends.html')
+output_file('ptable_trends.html')
 
 #Parse arguments
 parser = argparse.ArgumentParser(description='Plot periodic trends as a heat '
