@@ -27,16 +27,11 @@ Use the `--cbar_height` flag followed by a positive integer to set the height (i
 
 Use the `--help` flag to see the aforementioned usage instructions.
 
-**Other information**
-
-Ensure that the `elements.csv` file is in the same directory as `ptable_trends.py`. The `elements.csv` file contains information that `ptable_trends.py` needs in order to construct the periodic table of elements (e.g. chemical names, symbols, atomic numbers). This does not need to be edited by the user. Your periodic trend data should be saved as a separated CSV file, like the example `ionization_energies.csv` file.
-
 Dependencies
 -----
 
 This script is compatible with both Python 2.x and 3.x versions. The script requires the following dependencies:
 * [Bokeh](http://bokeh.pydata.org/en/latest/) (and its dependencies)
-* [pandas](http://pandas.pydata.org/) (and its dependencies)
 * [matplotlib](http://matplotlib.org/) (and its dependencies)
 
 These packages can be installed using [pip](https://pip.pypa.io/en/stable/). However, since both Bokeh and matplotlib have multiple dependencies, it is much easier to install through the `conda install` command if you have an [Anaconda distribution](https://www.continuum.io/downloads) of Python. 
