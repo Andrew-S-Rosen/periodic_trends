@@ -19,8 +19,6 @@ Use the `--cmap_choice` flag followed by an integer ranging from 0 to 3 to selec
 
 Use the `--alpha` flag followed by a float ranging from 0 to 1 to select the RGBA alpha value (a measure of the transparency). The default alpha value is 0.85.
 
-Use the `--extended` flag followed by either 0 or 1 to select if you want the periodic table to include the rows corresponding to the lanthanides and actinides. The default value is either 0 (don't show) or 1 (do show) depending on if there are lanthanide or actinide elements in the CSV file.
-
 Use the `--log_scale` flag followed by a either 0 or 1 to select if you want a linearized (0) color map and color bar or loagrithmic (1) color map and color bar. The default is 0 for a linearized scale.
 
 Use the `--cbar_height` flag followed by a positive integer to set the height (in pixels) of the color bar axis. The default is automatically chosen to be the full height of the figure.
@@ -39,8 +37,7 @@ These packages can be installed using [pip](https://pip.pypa.io/en/stable/). How
 Examples
 -----
 
-I show below some examples of the script in action using the `ionization_energies.csv` file included in this repository. Note that since the CSV file contains data for some of the lanthanides and actinides, the value of `--extended` defaults to 1 (instead of the usual 0) unless manually set otherwise.
-
+I show below some examples of the script in action using the `ionization_energies.csv` file included in this repository.
 ---
 
 `python ptable_trends.py ionization_energies.csv`
@@ -48,17 +45,17 @@ I show below some examples of the script in action using the `ionization_energie
 ![plot1](http://i.imgur.com/Uxb8V0p.png)
 ---
 
-`python ptable_trends.py ionization_energies.csv --extended 0`
+`python ptable_trends.py ionization_energies.csv`
 
 ![plot2](http://i.imgur.com/Att5d9X.png)
 ---
 
-`python ptable_trends.py ionization_energies.csv --extended 0 --log_scale 1`
+`python ptable_trends.py ionization_energies.csv --log_scale 1`
 
 ![plot3](http://i.imgur.com/Xt3oW6q.png)
 ---
 
-`python ptable_trends.py ionization_energies.csv --extended 0 --cmap_choice 3 --alpha 0.7`
+`python ptable_trends.py ionization_energies.csv --cmap_choice 3 --alpha 0.7`
 
 ![plot4](http://i.imgur.com/52IBhVm.png)
 ---
