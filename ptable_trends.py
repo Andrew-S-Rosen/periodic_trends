@@ -41,10 +41,8 @@ cbar_height = args.cbar_height
 #Error handling
 if width < 0:
 	raise argparse.ArgumentTypeError('--width must be a positive integer')
-
 if alpha < 0 or alpha > 1:
 	raise argparse.ArgumentTypeError('--alpha must be between 0 and 1')
-
 if cbar_height is not None and cbar_height < 0:
 	raise argparse.ArgumentTypeError('--cbar_height must be a positive integer')
 
@@ -61,11 +59,7 @@ elif cmap_choice == 2:
 elif cmap_choice == 3:
 	cmap = viridis
 	bokeh_palette = 'Viridis256'
-
-#Define the lanthanides and actinides in bokeh elements
-lanthanides = [x.lower() for x in elements['symbol'][56:70].tolist()]
-actinides = [x.lower() for x in elements['symbol'][88:102].tolist()]
-
+	
 #Define number of and groups
 period_label = ['1', '2', '3', '4', '5', '6', '7']
 group_range = [str(x) for x in range(1, 19)]
@@ -103,9 +97,9 @@ if log_scale == 0:
 		high=max(data))
 	norm = Normalize(vmin = min(data), vmax = max(data))
 elif log_scale == 1:
-	for i in range(len(data)):
-		if data[i] < 0:
-			raise ValueError('Entry for element '+data_elements[i]+' is negative but'
+	for data_element in data_elements:
+		if data_element < 0:
+			raise ValueError('Entry for element '+data_element+' is negative but'
 			' log-scale is selected')
 	color_mapper = LogColorMapper(palette = bokeh_palette, low=min(data), 
 		high=max(data))
@@ -119,14 +113,14 @@ for i in range(len(elements)):
 	color_list.append(blank_color)
 
 #Compare elements in dataset with elements in periodic table
-for i in range(len(data)):
-	element_entry = elements.symbol[elements.symbol.str.lower() == data_elements[i].lower()]
+for i, data_element in enumerate(data_elements):
+	element_entry = elements.symbol[elements.symbol.str.lower() == data_element.lower()]
 	if element_entry.empty == False:
 		element_index = element_entry.index[0]
 	else:
-		print('WARNING: Invalid chemical symbol: '+data_elements[i])
+		print('WARNING: Invalid chemical symbol: '+data_element)
 	if color_list[element_index] != blank_color:
-		print('WARNING: Multiple entries for element '+data_elements[i])
+		print('WARNING: Multiple entries for element '+data_element)
 	color_list[element_index] = to_hex(color_scale[i])
 
 #Define figure properties for visualizing data
