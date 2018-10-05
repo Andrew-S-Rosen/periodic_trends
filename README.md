@@ -19,6 +19,8 @@ Use the `--cmap_choice` flag followed by an integer ranging from 0 to 3 to selec
 
 Use the `--alpha` flag followed by a float ranging from 0 to 1 to select the RGBA alpha value (a measure of the transparency). The default alpha value is 0.85.
 
+Use the `--extended` flag followed by either `true` or `false` to select if you'd like to include the lanthanides and actinides. The default is `true` for inclusion of the lanthanides and actinides.
+
 Use the `--log_scale` flag followed by a either 0 or 1 to select if you want a linearized (0) color map and color bar or loagrithmic (1) color map and color bar. The default is 0 for a linearized scale.
 
 Use the `--cbar_height` flag followed by a positive integer to set the height (in pixels) of the color bar axis. The default is automatically chosen to be the full height of the figure.
@@ -40,15 +42,14 @@ Examples
 
 `python ptable_trends.py ionization_energies.csv`
 
-![plot1](http://i.imgur.com/Uxb8V0p.png)
+![plot1](example_image/plot1.png)
 ---
 
 `python ptable_trends.py ionization_energies.csv --log_scale 1`
 
-![plot2](https://i.imgur.com/jT2Msqd.png)
+![plot2](example_image/plot2.png)
 ---
 
-`python ptable_trends.py ionization_energies.csv --cmap_choice 3 --alpha 0.7`
+`python ptable_trends.py ionization_energies.csv --cmap_choice 3 --alpha 0.7 --extended false`
 
-![plot3](https://i.imgur.com/nrUsg3v.png)
----
+![plot4](example_image/plot3.png)

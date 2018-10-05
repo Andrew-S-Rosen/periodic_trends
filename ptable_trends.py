@@ -25,6 +25,8 @@ parser.add_argument('--cmap_choice',type=int,default=0,choices=range(0,4),
 	help='Color palette choice: 0 = Plasma, 1 = Inferno, 2 = Magma, 3 = Viridis')
 parser.add_argument('--alpha',type=float,default=0.65,help='Alpha value '
 	'for color scale (ranges from 0 to 1)')
+parser.add_argument('--extended',default='True',choices=["False","false","True","true"],
+	help='Keyword for excluding (false) or including (true) the lanthanides and actinides')
 parser.add_argument('--log_scale',type=int,default=0,choices=range(0,2),
 	help='Keyword for linear (0) or logarithmic (1) color bar')
 parser.add_argument('--cbar_height',type=int,help='Height (in pixels) of color '
@@ -35,6 +37,12 @@ filename = args.filename
 width = args.width
 cmap_choice = args.cmap_choice
 alpha = args.alpha
+if args.extended.lower() == 'true':
+	extended = True
+elif args.extended.lower() == 'false':
+	extended = False
+else:
+	raise ValueError('Invalid keyword for --extended')
 log_scale = args.log_scale
 cbar_height = args.cbar_height
 
@@ -79,17 +87,18 @@ period_label.append('blank')
 period_label.append('La')
 period_label.append('Ac')
 
-count = 0
-for i in range(56,70):
-    elements.period[i] = 'La'
-    elements.group[i] = str(count+4)
-    count += 1
+if extended:
+	count = 0
+	for i in range(56,70):
+	    elements.period[i] = 'La'
+	    elements.group[i] = str(count+4)
+	    count += 1
 
-count = 0
-for i in range(88,102):
-    elements.period[i] = 'Ac'
-    elements.group[i] = str(count+4)
-    count += 1
+	count = 0
+	for i in range(88,102):
+	    elements.period[i] = 'Ac'
+	    elements.group[i] = str(count+4)
+	    count += 1
 
 #Define matplotlib and bokeh color map
 if log_scale == 0:
@@ -97,9 +106,9 @@ if log_scale == 0:
 		high=max(data))
 	norm = Normalize(vmin = min(data), vmax = max(data))
 elif log_scale == 1:
-	for data_element in data_elements:
-		if data_element < 0:
-			raise ValueError('Entry for element '+data_element+' is negative but'
+	for datum in data:
+		if datum < 0:
+			raise ValueError('Entry for element '+datum+' is negative but'
 			' log-scale is selected')
 	color_mapper = LogColorMapper(palette = bokeh_palette, low=min(data), 
 		high=max(data))
