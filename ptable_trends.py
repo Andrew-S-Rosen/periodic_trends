@@ -27,6 +27,8 @@ parser.add_argument('--alpha',type=float,default=0.65,help='Alpha value '
 	'for color scale (ranges from 0 to 1)')
 parser.add_argument('--extended',default='True',choices=["False","false","True","true"],
 	help='Keyword for excluding (false) or including (true) the lanthanides and actinides')
+parser.add_argument('--period_remove',type=str,nargs='*',help='Period(s) to remove')
+parser.add_argument('--group_remove',type=str,nargs='*',help='Group(s) to remove')
 parser.add_argument('--log_scale',type=int,default=0,choices=range(0,2),
 	help='Keyword for linear (0) or logarithmic (1) color bar')
 parser.add_argument('--cbar_height',type=int,help='Height (in pixels) of color '
@@ -51,6 +53,8 @@ log_scale = args.log_scale
 cbar_height = args.cbar_height
 cbar_standoff = args.cbar_standoff
 cbar_fontsize = args.cbar_fontsize
+period_remove = args.period_remove
+group_remove = args.group_remove
 
 if not cbar_standoff:
 	cbar_standoff = 12
@@ -82,6 +86,16 @@ elif cmap_choice == 3:
 #Define number of and groups
 period_label = ['1', '2', '3', '4', '5', '6', '7']
 group_range = [str(x) for x in range(1, 19)]
+
+#Remove any groups or periods
+if group_remove:
+	for gr in group_remove:
+		gr = gr.strip()
+		group_range.remove(gr)
+if period_remove:
+	for pr in period_remove:
+		pr = pr.strip()
+		period_label.remove(pr)
 
 #Read in data from CSV file
 data_elements = []

@@ -21,6 +21,10 @@ Use the `--alpha` flag followed by a float ranging from 0 to 1 to select the RGB
 
 Use the `--extended` flag followed by either `true` or `false` to select if you'd like to include the lanthanides and actinides. The default is `true` for inclusion of the lanthanides and actinides.
 
+Use the `--period_remove` flag followed by a list of integers to remove the corresponding periods from the periodic table.
+
+Use the `--group_remove` flag followed by a list of integers to remove the corresponding groups from the periodic table.
+
 Use the `--log_scale` flag followed by a either 0 or 1 to select if you want a linearized (0) color map and color bar or loagrithmic (1) color map and color bar. The default is 0 for a linearized scale.
 
 Use the `--cbar_height` flag followed by a positive integer to set the height (in pixels) of the color bar axis. The default is automatically chosen to be the full height of the figure.
@@ -50,6 +54,6 @@ Examples
 ![plot2](example_images/plot2.png)
 ---
 
-`python ptable_trends.py ionization_energies.csv --cmap_choice 3 --alpha 0.7 --extended false`
+`python ptable_trends.py ionization_energies.csv --cmap_choice 3 --alpha 0.7 --extended false --period_remove 1`
 
 ![plot4](example_images/plot3.png)
