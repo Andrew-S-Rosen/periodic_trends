@@ -31,6 +31,10 @@ parser.add_argument('--log_scale',type=int,default=0,choices=range(0,2),
 	help='Keyword for linear (0) or logarithmic (1) color bar')
 parser.add_argument('--cbar_height',type=int,help='Height (in pixels) of color '
 	'bar')
+parser.add_argument('--cbar_standoff',type=int,help='Distance (in pixels) that the '
+	'colorbar tick values should be from the colorbar itself')
+parser.add_argument('--cbar_fontsize',type=int,help='Fontsize (in pt) that the '
+	'colorbar tick values should be')
 
 args = parser.parse_args()
 filename = args.filename
@@ -45,6 +49,13 @@ else:
 	raise ValueError('Invalid keyword for --extended')
 log_scale = args.log_scale
 cbar_height = args.cbar_height
+cbar_standoff = args.cbar_standoff
+cbar_fontsize = args.cbar_fontsize
+
+if not cbar_standoff:
+	cbar_standoff = 12
+if not cbar_fontsize:
+	cbar_fontsize = 12
 
 #Error handling
 if width < 0:
@@ -162,13 +173,14 @@ text_props = {
 x = dodge("group", -0.4, range=p.x_range)
 y = dodge("period", 0.3, range=p.y_range)
 p.text(x=x, y='period', text='sym',
-       text_font_style='bold', text_font_size='15pt', **text_props)
+       text_font_style='bold', text_font_size='16pt', **text_props)
 p.text(x=x, y=y, text='atomic_number',
-       text_font_size='9pt', **text_props)
+       text_font_size='11pt', **text_props)
+
 color_bar = ColorBar(color_mapper=color_mapper,
 	ticker=BasicTicker(desired_num_ticks=10),border_line_color=None,
-	label_standoff=6,location=(0,0),orientation='vertical',
-    scale_alpha=alpha)
+	label_standoff=cbar_standoff,location=(0,0),orientation='vertical',
+    scale_alpha=alpha,major_label_text_font_size=str(cbar_fontsize)+'pt')
 
 if cbar_height is not None:
 	color_bar.height = cbar_height
