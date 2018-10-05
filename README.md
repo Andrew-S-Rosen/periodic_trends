@@ -42,14 +42,14 @@ Examples
 
 `python ptable_trends.py ionization_energies.csv`
 
-![plot1](example_image/plot1.png)
+![plot1](example_images/plot1.png)
 ---
 
 `python ptable_trends.py ionization_energies.csv --log_scale 1`
 
-![plot2](example_image/plot2.png)
+![plot2](example_images/plot2.png)
 ---
 
 `python ptable_trends.py ionization_energies.csv --cmap_choice 3 --alpha 0.7 --extended false`
 
-![plot4](example_image/plot3.png)
+![plot4](example_images/plot3.png)
