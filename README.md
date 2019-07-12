@@ -9,7 +9,7 @@ This Python script (`ptable_trends.py`) can be used to plot a heat map over an i
 
 **Required Arguments**
 
-The only required argument is the `filename` argument. This is the full name (with extension) of the data file containing your periodic trend data. The data file must be in a comma-separated value (CSV) format with the first entry in each row being the atom symbol and the second entry being the value you wish to plot. The atomic symbol is not case-sensitive, and the elemental data can be put in any order. Any element not included in the CSV file will be a default gray color. An example CSV file is included in this repository for testing purposes under the name `ionization_energies.csv`. After the `ptable_trends.py` script is run, it will show the plot in your web browser. To save the image, simply click the save icon that appears in the web browser figure.
+The only required argument is the `filename` argument. This is the full filepath/name (with extension) of the data file containing your periodic trend data. The data file must be in a comma-separated value (CSV) format with the first entry in each row being the atom symbol and the second entry being the value you wish to plot. The atomic symbol is not case-sensitive, and the elemental data can be put in any order. Any element not included in the CSV file will be a default gray color. An example CSV file is included in this repository for testing purposes under the name `ionization_energies.csv`. After the `ptable_trends.py` script is run, it will show the plot in your web browser. To save the image, simply click the save icon that appears in the web browser figure.
 
 **Optional Arguments**
 
@@ -41,7 +41,7 @@ This script is compatible with both Python 2.x and 3.x versions. The script requ
 * [pandas](http://pandas.pydata.org/)
 * [matplotlib](http://matplotlib.org/)
 
-These packages can be installed using [pip](https://pip.pypa.io/en/stable/). However, since the packages have multiple dependencies, it is much easier to install through the `conda install` command if you have an [Anaconda distribution](https://www.continuum.io/downloads) of Python. 
+These packages can be installed using [pip](https://pip.pypa.io/en/stable/) via `pip install -r requirements.txt` in the `ptable_trends` base directory or via the appropriate `conda install` commands if you have an [Anaconda distribution](https://www.continuum.io/downloads) of Python. 
 
 Examples
 -----
