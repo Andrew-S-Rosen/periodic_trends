@@ -38,7 +38,7 @@ parser.add_argument('--cbar_standoff',type=int,help='Distance (in pixels) that t
 parser.add_argument('--cbar_fontsize',type=int,help='Fontsize (in pt) that the '
 	'colorbar tick values should be')
 
-args = parser.parse_args()
+args = parser.parse_known_args()[0]
 filename = args.filename
 width = args.width
 cmap_choice = args.cmap_choice
