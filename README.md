@@ -14,7 +14,7 @@ ptable_plotter("ionization_energies.csv")
 
 The only required argument to `ptable_plotter()` is a single positional argument for the full filepath/name (with extension) of the data file containing your periodic trend data. The data file must be in a comma-separated value (`.csv`) format with the first entry in each row being the atom symbol and the second entry being the value you wish to plot. An example `.csv` file is included in this repository for testing purposes under the name `ionization_energies.csv`. After the `ptable_trends.py` script is run, it will show the plot in your web browser. To save the image, simply click the save icon that appears in the web browser figure.
 
-There are numerous optional arguments, which can be used to modify the appearance of the figure. These are listed below:
+There are numerous optional arguments, which can be used to modify the appearance of the figure. The full argument list is below:
 ```
     Parameters
     ----------
@@ -61,7 +61,7 @@ There are numerous optional arguments, which can be used to modify the appearanc
         Bokeh figure object.
 ```
 
-A couple of examples using various optional keyword arguments are included below:
+A couple of examples using various optional keyword arguments are as follows:
 ```python
 from ptable_trends import ptable_plotter
 ptable_plotter("ionization_energies.csv", log_scale = True)
