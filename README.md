@@ -26,7 +26,7 @@ ptable_plotter("ionization_energies.csv", log_scale=True)
 
 ```python
 from ptable_trends import ptable_plotter
-ptable_plotter("ionization_energies.csv", cmap="viridis", alpha=0.7, extended=False, periods_remove=[1]
+ptable_plotter("ionization_energies.csv", cmap="viridis", alpha=0.7, extended=False, periods_remove=[1])
 ```
 ![plot3](example_images/plot3.png)
 
