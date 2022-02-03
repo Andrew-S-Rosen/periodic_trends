@@ -85,6 +85,7 @@ def ptable_plotter(
         List of elements to be colored with special_color.
     special_color: str
         Hexadecimal color to be used for the special elements.
+
     Returns
     -------
     figure
