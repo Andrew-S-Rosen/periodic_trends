@@ -20,7 +20,7 @@ https://github.com/arosen93/ptable_trends/blob/776c16adcb0a592237ad2dc44b20ee7bc
 A couple of examples using various optional keyword arguments are as follows:
 ```python
 from ptable_trends import ptable_plotter
-ptable_plotter("ionization_energies.csv", log_scale = True)
+ptable_plotter("ionization_energies.csv", log_scale=True)
 ```
 ![plot2](example_images/plot2.png)
 
