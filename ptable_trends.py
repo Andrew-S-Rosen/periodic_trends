@@ -178,19 +178,12 @@ def ptable_plotter(
             warnings.warn("Invalid chemical symbol: " + data_element)
         if color_list[element_index] != blank_color:
             warnings.warn("Multiple entries for element " + data_element)
-        color_list[element_index] = to_hex(color_scale[i])
-
-    # Define under color
-    if under_value is not None:
-        for i in range(len(data)):
-            if data[i] <= under_value:
-                color_list[i] = under_color
-
-    # Define over color
-    if over_value is not None:
-        for i in range(len(data)):
-            if data[i] >= over_value:
-                color_list[i] = over_color
+        if under_value is not None and data[i] <= under_value:
+            color_list[element_index] = under_color
+        elif over_value is not None and data[i] >= over_value:
+            color_list[element_index] = over_color
+        else:
+            color_list[element_index] = to_hex(color_scale[i])
 
     # Define figure properties for visualizing data
     source = ColumnDataSource(
