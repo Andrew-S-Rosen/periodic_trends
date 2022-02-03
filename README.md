@@ -1,61 +1,85 @@
 # Periodic Trend Plotter
-Python script to plot periodic trends as a heat map over the periodic table of elements
-
-[![DOI](https://zenodo.org/badge/83141779.svg)](https://zenodo.org/badge/latestdoi/83141779)
+Python script to plot periodic trends as a heat map over the periodic table of elements.
 
 Usage
 -----
-This Python script (`ptable_trends.py`) can be used to plot a heat map over an image of the periodic table of elements for easy and automated visualization of periodic trends. The required input and arguments are shown below.
+This Python script (`ptable_trends.py`) can be used to plot a heat map over an image of the periodic table of elements for easy and automated visualization of periodic trends.
 
-**Required Arguments**
+The only required argument to `ptable_plotter()` is a single positional argument for the full filepath/name (with extension) of the data file containing your periodic trend data. The data file must be in a comma-separated value (`.csv`) format with the first entry in each row being the atom symbol and the second entry being the value you wish to plot. An example `.csv` file is included in this repository for testing purposes under the name `ionization_energies.csv`. After the `ptable_trends.py` script is run, it will show the plot in your web browser. To save the image, simply click the save icon that appears in the web browser figure.
 
-The only required argument is the `filename` argument. This is the full filepath/name (with extension) of the data file containing your periodic trend data. The data file must be in a comma-separated value (CSV) format with the first entry in each row being the atom symbol and the second entry being the value you wish to plot. The atomic symbol is not case-sensitive, and the elemental data can be put in any order. Any element not included in the CSV file will be a default gray color. An example CSV file is included in this repository for testing purposes under the name `ionization_energies.csv`. After the `ptable_trends.py` script is run, it will show the plot in your web browser. To save the image, simply click the save icon that appears in the web browser figure.
+A minimal example is as follows:
+```python
+from ptable_trends import ptable_plotter
+ptable_plotter("ionization_energies.csv")
+```
+![plot1](example_images/plot1.png)
 
-**Optional Arguments**
+There are numerous optional arguments, which can be used to modify the appearance of the figure. These are listed below:
+```
+    Parameters
+    ----------
+    filename : str
+        Path to the .csv file containing the data to be plotted.
+    show : str
+        If True, the plot will be shown.
+    output_filename : str
+        If not None, the plot will be saved to the specified (.html) file.
+    width : float
+        Width of the plot.
+    cmap : str
+        plasma, infnerno, viridis, or magma
+    alpha : float
+        Alpha value (transparency).
+    extended : bool
+        If True, the lanthanoids and actinoids will be shown.
+    periods_remove : List[int]
+        Period numbers to be removed from the plot.
+    groups_remove : List[int]
+        Group numbers to be removed from the plot.
+    log_scale : bool
+        If True, the colorbar will be logarithmic.
+    cbar_height : int
+        Height of the colorbar.
+    cbar_standoff : int
+        Distance between the colorbar and the plot.
+    cbar_fontsize : int
+        Fontsize of the colorbar label.
+    blank_color : str
+        Hexadecimal color of the elements without data.
+    under_value : float
+        Values <= under_value will be colored with under_color.
+    under_color : str
+        Hexadecimal color to be used for the lower bound color.
+    over_value : float
+        Values >= over_value will be colored with over_color.
+    under_color : str
+        Hexadecial color to be used for the upper bound color.
 
-There are a number of optional arguments that can be used to quickly change settings in the `ptable_trends.py` script. 
+    Returns
+    -------
+    figure
+        Bokeh figure object.
+```
 
-Use the `--width` flag followed by a positive integer to set the width (in pixels) of the figure. The default is a width of 1050 pixels. 
+A couple of examples using various optional keyword arguments are included below:
+```python
+from ptable_trends import ptable_plotter
+ptable_plotter("ionization_energies.csv", log_scale = True)
+```
+![plot2](example_images/plot2.png)
 
-Use the `--cmap_choice` flag followed by an integer ranging from 0 to 3 to select one of the default color maps. A value of 0 is the default and selects the [plasma](https://bids.github.io/colormap/images/screenshots/option_c.png) color map, a value of 1 selects the [inferno](https://bids.github.io/colormap/images/screenshots/option_b.png) color map, a value of 2 selects the [magma](https://bids.github.io/colormap/images/screenshots/option_a.png) color map, and a value of 3 selects the [viridis](https://bids.github.io/colormap/images/screenshots/option_d.png) color map. 
-
-Use the `--alpha` flag followed by a float ranging from 0 to 1 to select the RGBA alpha value (a measure of the transparency). The default alpha value is 0.85.
-
-Use the `--extended` flag followed by either `true` or `false` to select if you'd like to include the lanthanides and actinides. The default is `true` for inclusion of the lanthanides and actinides.
-
-Use the `--period_remove` flag followed by a list of integers to remove the corresponding periods from the periodic table.
-
-Use the `--group_remove` flag followed by a list of integers to remove the corresponding groups from the periodic table.
-
-Use the `--log_scale` flag followed by a either 0 or 1 to select if you want a linearized (0) color map and color bar or loagrithmic (1) color map and color bar. The default is 0 for a linearized scale.
-
-Use the `--cbar_height` flag followed by a positive integer to set the height (in pixels) of the color bar axis. The default is automatically chosen to be the full height of the figure.
-
-Use the `--help` flag to see the aforementioned usage instructions.
+```python
+from ptable_trends import ptable_plotter
+ptable_plotter("ionization_energies.csv", cmap="viridis", alpha=0.7, extended=False,periods_remove=[1]
+```
+![plot3](example_images/plot3.png)
 
 Dependencies
 -----
 
-This script is compatible with both Python 2.x and 3.x versions. The script requires the following dependencies:
+The script requires the following dependencies:
 * [Bokeh](http://bokeh.pydata.org/en/latest/)
 * [pandas](http://pandas.pydata.org/)
 * [matplotlib](http://matplotlib.org/)
 
-These packages can be installed using [pip](https://pip.pypa.io/en/stable/) via `pip install -r requirements.txt` in the `ptable_trends` base directory or via the appropriate `conda install` commands if you have an [Anaconda distribution](https://www.continuum.io/downloads) of Python. 
-
-Examples
------
-
-`python ptable_trends.py ionization_energies.csv`
-
-![plot1](example_images/plot1.png)
----
-
-`python ptable_trends.py ionization_energies.csv --log_scale 1`
-
-![plot2](example_images/plot2.png)
----
-
-`python ptable_trends.py ionization_energies.csv --cmap_choice 3 --alpha 0.7 --extended false --period_remove 1`
-
-![plot4](example_images/plot3.png)
+These packages can be installed using [pip](https://pip.pypa.io/en/stable/) via `pip install -r requirements.txt` in the `ptable_trends` base directory.

@@ -5,8 +5,7 @@ from bokeh.models import (
     ColorBar,
     BasicTicker,
 )
-from bokeh.plotting import figure
-from bokeh.io import output_file
+from bokeh.plotting import figure, output_file
 from bokeh.io import show as show_
 from bokeh.sampledata.periodic_table import elements
 from bokeh.transform import dodge
@@ -20,22 +19,22 @@ import warnings
 
 def ptable_plotter(
     filename: str,
-    output_filename: str = "ptable_trends.html",
-    show: bool = False,
-    width: float = 1050,
+    show: bool = True,
+    output_filename: str = None,
+    width: int = 1050,
     cmap: str = "plasma",
     alpha: float = 0.65,
     extended: bool = True,
-    periods_remove: int | List[int] = None,
-    groups_remove: int | List[int] = None,
+    periods_remove: List[int] = None,
+    groups_remove: List[int] = None,
     log_scale: bool = False,
     cbar_height: float = None,
     cbar_standoff: int = 12,
-    cbar_fontsize: int = 12,
+    cbar_fontsize: int = 14,
     blank_color: str = "#140F0E",
     under_value: float = None,
-    over_value: float = None,
     under_color: str = "#140F0E",
+    over_value: float = None,
     over_color: str = "#c4c4c4",
 ) -> figure:
 
@@ -46,22 +45,22 @@ def ptable_plotter(
     ----------
     filename : str
         Path to the .csv file containing the data to be plotted.
-    output_filename : str
-        Name of the output HTML file.
-    show : bool
+    show : str
         If True, the plot will be shown.
+    output_filename : str
+        If not None, the plot will be saved to the specified (.html) file.
     width : float
         Width of the plot.
     cmap : str
         plasma, infnerno, viridis, or magma
     alpha : float
-        Alpha value for the heatmap.
+        Alpha value (transparency).
     extended : bool
         If True, the lanthanoids and actinoids will be shown.
     periods_remove : List[int]
-        Periods to be removed from the plot.
+        Period numbers to be removed from the plot.
     groups_remove : List[int]
-        Groups to be removed from the plot.
+        Group numbers to be removed from the plot.
     log_scale : bool
         If True, the colorbar will be logarithmic.
     cbar_height : int
@@ -71,11 +70,15 @@ def ptable_plotter(
     cbar_fontsize : int
         Fontsize of the colorbar label.
     blank_color : str
-        Hexadecimal color of the blank space.
+        Hexadecimal color of the elements without data.
     under_value : float
-        Value to be used for the underflow color.
+        Values <= under_value will be colored with under_color.
     under_color : str
-        Color to be used for the underflow color.
+        Hexadecimal color to be used for the lower bound color.
+    over_value : float
+        Values >= over_value will be colored with over_color.
+    under_color : str
+        Hexadecial color to be used for the upper bound color.
 
     Returns
     -------
@@ -84,8 +87,6 @@ def ptable_plotter(
     """
 
     options.mode.chained_assignment = None
-
-    output_file(output_filename)
 
     # Assign color palette based on input argument
     if cmap == "plasma":
@@ -187,7 +188,6 @@ def ptable_plotter(
 
     # Define over color
     if over_value is not None:
-        print("co")
         for i in range(len(data)):
             if data[i] >= over_value:
                 color_list[i] = over_color
@@ -207,6 +207,8 @@ def ptable_plotter(
     p = figure(x_range=group_range, y_range=list(reversed(period_label)), tools="save")
     p.plot_width = width
     p.outline_line_color = None
+    p.background_fill_color = None
+    p.border_fill_color = None
     p.toolbar_location = "above"
     p.rect("group", "period", 0.9, 0.9, source=source, alpha=alpha, color="type_color")
     p.axis.visible = False
@@ -245,6 +247,9 @@ def ptable_plotter(
 
     p.add_layout(color_bar, "right")
     p.grid.grid_line_color = None
+
+    if output_filename:
+        output_file(output_filename)
 
     if show:
         show_(p)
