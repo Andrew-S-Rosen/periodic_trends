@@ -189,9 +189,10 @@ def ptable_plotter(
         else:
             color_list[element_index] = to_hex(color_scale[i])
 
-    for k, v in elements["symbol"].iteritems():
-        if v in special_elements:
-            color_list[k] = special_color
+    if special_elements:
+        for k, v in elements["symbol"].iteritems():
+            if v in special_elements:
+                color_list[k] = special_color
 
     # Define figure properties for visualizing data
     source = ColumnDataSource(
