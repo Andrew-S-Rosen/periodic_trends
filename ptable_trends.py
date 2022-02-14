@@ -11,7 +11,15 @@ from bokeh.sampledata.periodic_table import elements
 from bokeh.transform import dodge
 from csv import reader
 from matplotlib.colors import Normalize, LogNorm, to_hex
-from matplotlib.cm import plasma, inferno, magma, viridis, ScalarMappable
+from matplotlib.cm import (
+    plasma,
+    inferno,
+    magma,
+    viridis,
+    cividis,
+    turbo,
+    ScalarMappable,
+)
 from pandas import options
 from typing import List
 import warnings
@@ -54,7 +62,7 @@ def ptable_plotter(
     width : float
         Width of the plot.
     cmap : str
-        plasma, infnerno, viridis, or magma
+        plasma, inferno, viridis, magma, cividis, turbo
     alpha : float
         Alpha value (transparency).
     extended : bool
@@ -107,6 +115,14 @@ def ptable_plotter(
     elif cmap == "viridis":
         cmap = viridis
         bokeh_palette = "Viridis256"
+    elif cmap == "cividis":
+        cmap = cividis
+        bokeh_palette = "Cividis256"
+    elif cmap == "turbo":
+        cmap = turbo
+        bokeh_palette = "Turbo256"
+    else:
+        ValueError("Invalid color map.")
 
     # Define number of and groups
     period_label = ["1", "2", "3", "4", "5", "6", "7"]
