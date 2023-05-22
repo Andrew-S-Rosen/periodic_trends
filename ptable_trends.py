@@ -149,23 +149,14 @@ def ptable_plotter(
     if len(data) != len(data_elements):
         raise ValueError("Unequal number of atomic elements and data points")
 
-    period_label.append("blank")
-    period_label.append("La")
-    period_label.append("Ac")
-
+    period_label.extend(("blank", "La", "Ac"))
     if extended:
-        count = 0
-        for i in range(56, 70):
+        for count, i in enumerate(range(56, 70)):
             elements.period[i] = "La"
             elements.group[i] = str(count + 4)
-            count += 1
-
-        count = 0
-        for i in range(88, 102):
+        for count, i in enumerate(range(88, 102)):
             elements.period[i] = "Ac"
             elements.group[i] = str(count + 4)
-            count += 1
-
     # Define matplotlib and bokeh color map
     if log_scale:
         for datum in data:
