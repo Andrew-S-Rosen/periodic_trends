@@ -223,7 +223,7 @@ def ptable_plotter(
 
     # Plot the periodic table
     p = figure(x_range=group_range, y_range=list(reversed(period_label)), tools="save")
-    p.plot_width = width
+    p.width = width
     p.outline_line_color = None
     p.background_fill_color = None
     p.border_fill_color = None
