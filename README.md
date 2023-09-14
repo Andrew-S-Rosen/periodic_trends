@@ -18,7 +18,8 @@ ptable_plotter("ionization_energies.csv")
 The only required argument to `ptable_plotter()` is a single positional argument for the full filepath/name (with extension) of the data file containing your periodic trend data. The data file must be in a comma-separated value (`.csv`) format with the first entry in each row being the atom symbol and the second entry being the value you wish to plot. An example `.csv` file is included in this repository for testing purposes under the name `ionization_energies.csv`. After the `periodic_trends.py` script is run, it will show the plot in your web browser. To save the image, simply click the save icon that appears in the web browser figure.
 
 There are numerous optional arguments, which can be used to modify the appearance of the figure. The full argument list is below:
-https://github.com/arosen93/periodic_trends/blob/0dd4171ececfc5524dea858c562953952295612f/periodic_trends.py#L28-L95
+[https://github.com/arosen93/periodic_trends/blob/0dd4171ececfc5524dea858c562953952295612f/periodic_trends.py#L28-L95
+](https://github.com/Andrew-S-Rosen/periodic_trends/blob/ba8224d701986ee0215af2eb0f6c37de9ef2e683/ptable_trends.py#L28-L101)
 
 A couple of examples using various optional keyword arguments are as follows:
 
