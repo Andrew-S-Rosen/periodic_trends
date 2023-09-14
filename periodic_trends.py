@@ -25,7 +25,7 @@ from typing import List
 import warnings
 
 
-def ptable_plotter(
+def plotter(
     filename: str,
     show: bool = True,
     output_filename: str = None,
