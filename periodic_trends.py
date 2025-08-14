@@ -1,28 +1,29 @@
+import warnings
+from csv import reader
+from typing import List
+
+from bokeh.io import show as show_
 from bokeh.models import (
+    BasicTicker,
+    ColorBar,
     ColumnDataSource,
     LinearColorMapper,
     LogColorMapper,
-    ColorBar,
-    BasicTicker,
 )
 from bokeh.plotting import figure, output_file
-from bokeh.io import show as show_
 from bokeh.sampledata.periodic_table import elements
 from bokeh.transform import dodge
-from csv import reader
-from matplotlib.colors import Normalize, LogNorm, to_hex
 from matplotlib.cm import (
-    plasma,
+    ScalarMappable,
+    cividis,
     inferno,
     magma,
-    viridis,
-    cividis,
+    plasma,
     turbo,
-    ScalarMappable,
+    viridis,
 )
+from matplotlib.colors import LogNorm, Normalize, to_hex
 from pandas import options
-from typing import List
-import warnings
 
 
 def plotter(
@@ -47,7 +48,6 @@ def plotter(
     special_elements: List[str] = None,
     special_color: str = "#6F3023",
 ) -> figure:
-
     """
     Plot a heatmap over the periodic table of elements.
 
@@ -152,10 +152,10 @@ def plotter(
     period_label.append("blank")
     period_label.append("La")
     period_label.append("Ac")
+    elements["period"] = elements["period"].astype(str)
 
     if extended:
         count = 0
-        elements
         for i in range(56, 70):
             elements.loc[i, "period"] = "La"
             elements.loc[i, "group"] = str(count + 4)
@@ -193,7 +193,7 @@ def plotter(
         element_entry = elements.symbol[
             elements.symbol.str.lower() == data_element.lower()
         ]
-        if element_entry.empty == False:
+        if not element_entry.empty:
             element_index = element_entry.index[0]
         else:
             warnings.warn("Invalid chemical symbol: " + data_element)
