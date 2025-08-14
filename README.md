@@ -15,14 +15,11 @@ plotter("ionization_energies.csv")
 
 ![plot1](example_images/plot1.png)
 
-If it doesn't show up the first time, try doing the following:
+If it doesn't show up the first time (sometimes happens in Jupyter Notebooks), try calling the following first:
 
 ```python
-from bokeh.io import show
-from periodic_trends import plotter
-
-p = plotter("ionization_energies.csv")
-show(p)
+from bokeh.io import output_notebook
+output_notebook()
 ```
 
 The only required argument to `plotter()` is a single positional argument for the full filepath/name (with extension) of the data file containing your periodic trend data. The data file must be in a comma-separated value (`.csv`) format with the first entry in each row being the atom symbol and the second entry being the value you wish to plot. An example `.csv` file is included in this repository for testing purposes under the name `ionization_energies.csv`. After the `periodic_trends.py` script is run, it will show the plot in your web browser. To save the image, simply click the save icon that appears in the web browser figure.
