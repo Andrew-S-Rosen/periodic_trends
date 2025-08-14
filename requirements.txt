@@ -1,3 +1,4 @@
 bokeh
+bokeh_sampledata
 pandas
 matplotlib
