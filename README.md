@@ -25,14 +25,16 @@ A couple of examples using various optional keyword arguments are as follows:
 
 ```python
 from periodic_trends import plotter
-plotter("ionization_energies.csv", log_scale=True).show()
+p = plotter("ionization_energies.csv", log_scale=True)
+p.show()
 ```
 
 ![plot2](example_images/plot2.png)
 
 ```python
 from periodic_trends import plotter
-plotter("ionization_energies.csv", cmap="viridis", alpha=0.7, extended=False, periods_remove=[1]).show()
+p = plotter("ionization_energies.csv", cmap="viridis", alpha=0.7, extended=False, periods_remove=[1])
+p.show()
 ```
 
 ![plot3](example_images/plot3.png)
@@ -42,6 +44,7 @@ plotter("ionization_energies.csv", cmap="viridis", alpha=0.7, extended=False, pe
 The script requires the following dependencies:
 
 - [Bokeh](http://bokeh.pydata.org/en/latest/)
+- [bokeh_sampledata](https://pypi.org/project/bokeh-sampledata)
 - [pandas](http://pandas.pydata.org/)
 - [matplotlib](http://matplotlib.org/)
 
