@@ -10,7 +10,8 @@ A minimal example is as follows:
 
 ```python
 from periodic_trends import plotter
-plotter("ionization_energies.csv")
+p = plotter("ionization_energies.csv")
+p.show()
 ```
 
 ![plot1](example_images/plot1.png)
@@ -24,14 +25,14 @@ A couple of examples using various optional keyword arguments are as follows:
 
 ```python
 from periodic_trends import plotter
-plotter("ionization_energies.csv", log_scale=True)
+plotter("ionization_energies.csv", log_scale=True).show()
 ```
 
 ![plot2](example_images/plot2.png)
 
 ```python
 from periodic_trends import plotter
-plotter("ionization_energies.csv", cmap="viridis", alpha=0.7, extended=False, periods_remove=[1])
+plotter("ionization_energies.csv", cmap="viridis", alpha=0.7, extended=False, periods_remove=[1]).show()
 ```
 
 ![plot3](example_images/plot3.png)
