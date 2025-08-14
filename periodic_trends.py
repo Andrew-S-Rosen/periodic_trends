@@ -155,15 +155,16 @@ def plotter(
 
     if extended:
         count = 0
+        elements
         for i in range(56, 70):
-            elements.period[i] = "La"
-            elements.group[i] = str(count + 4)
+            elements.loc[i, "period"] = "La"
+            elements.loc[i, "group"] = str(count + 4)
             count += 1
 
         count = 0
         for i in range(88, 102):
-            elements.period[i] = "Ac"
-            elements.group[i] = str(count + 4)
+            elements.loc[i, "period"] = "Ac"
+            elements.loc[i, "group"] = str(count + 4)
             count += 1
 
     # Define matplotlib and bokeh color map
