@@ -55,12 +55,14 @@ plotter(df, "Element", "Ionization Energy", cmap=cm.viridis, alpha=0.7, extended
 
 ![plot3](example_images/plot3.png)
 
+```python
 import pandas as pd
 from periodic_trends import plotter
 from matplotlib import cm
 
 df = pd.read_csv("ionization_energies.csv", names = ["Element", "Ionization Energy"])
 test=plotter(df, "Element", "Ionization Energy", print_data = True, cmap = cm.summer)
+```
 
 ![plot4](example_images/plot4.png)
 
