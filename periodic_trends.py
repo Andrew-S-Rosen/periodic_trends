@@ -118,7 +118,7 @@ def plotter(
     print_data: bool = False,
     float_decimals: int = 1,
     data_unit: str | None = None,
-    tools: list[str] = ["Save"],
+    tools: list[str] = ["save"],
     title: str | None = None,
 ) -> figure:
     """
