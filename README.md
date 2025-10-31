@@ -24,13 +24,6 @@ plotter(df, "Element", "Ionization Energy")
 
 ![plot1](example_images/plot1.png)
 
-If it doesn't show up the first time (sometimes happens in Jupyter Notebooks), try calling the following first:
-
-```python
-from bokeh.io import output_notebook
-output_notebook()
-```
-
 The `plotter()` function reads a pandas DataFrame containing periodic trend data. DataFrames can be read from a wide range of data formats, such as csv and xlsx. The `plotter()` takes three required arguments, the first being the DataFrame itself, the second is the name of the column containing the atom symbols of your elements, and the last being the name of column of the values you wish to plot.
 
 After the `periodic_trends.py` script is run, it will show the plot in your web browser. To save the image, simply click the save icon that appears in the web browser figure, or use [Bokeh to export it as a .png or .svg file](https://docs.bokeh.org/en/latest/docs/user_guide/output/export.html).
@@ -71,3 +64,13 @@ test=plotter(df, "Element", "Ionization Energy", print_data = True, cmap = cm.su
 ```
 
 ![plot4](example_images/plot4.png)
+
+## Troubleshooting
+
+
+If the plot doesn't show up the first time (sometimes happens in Jupyter Notebooks), try calling the following first:
+
+```python
+from bokeh.io import output_notebook
+output_notebook()
+```
