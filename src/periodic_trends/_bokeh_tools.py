@@ -2,22 +2,19 @@ from __future__ import annotations
 
 import pandas as pd
 from bokeh.colors import RGB
-from bokeh.models import (
-    LinearColorMapper,
-    LogColorMapper,
-)
+from bokeh.models import LinearColorMapper, LogColorMapper
 from matplotlib import cm
 from matplotlib.cm import ScalarMappable
 from matplotlib.colors import LinearSegmentedColormap, LogNorm, Normalize
-from numpy import  ndarray
+from numpy import ndarray
 
 
 def _color_scale_maker(
     data: pd.Series,
     cmap: LinearSegmentedColormap,
     log_scale: bool = False,
-    lower_boundary: int | None = None,
-    upper_boundary: int | None = None,
+    lower_boundary: float | None = None,
+    upper_boundary: float | None = None,
 ) -> tuple[ndarray, LogColorMapper | LinearColorMapper]:
     bokeh_palette, divergingPalette = _make_bokeh_color_palette(cmap)
 
@@ -74,6 +71,7 @@ def _color_scale_maker(
 
     return color_scale, color_mapper
 
+
 def _make_bokeh_color_palette(cm_palette: LinearSegmentedColormap) -> tuple[list, bool]:
     palette_rgb = (255 * cm_palette(range(256))).astype("int")
     divergingPalette = cm_palette in [
@@ -95,3 +93,53 @@ def _make_bokeh_color_palette(cm_palette: LinearSegmentedColormap) -> tuple[list
     ]  # type: ignore
     return [RGB(*tuple(rgb)).to_hex() for rgb in palette_rgb], divergingPalette
 
+
+class InputDataError(Exception):
+    pass
+
+
+def _input_checker(
+    df: pd.DataFrame,
+    column_elements: str | pd.Index | None,
+    column_data: str | pd.Index | None,
+) -> tuple[str | pd.Index | None, str | pd.Index | None]:
+    try:
+        columns = df.columns
+    except AttributeError:
+        raise InputDataError("The supplied dataframe has less than 2 columns.")
+
+    if len(df.columns) > 2 and (column_elements is None or column_data is None):
+        raise InputDataError(
+            "The supplied dataframe has more than 2 columns, but the columns to plot have not been assigned."
+        )
+    elif len(df.columns) > 2 and column_elements not in df.columns:
+        raise InputDataError(
+            f"{column_elements} is not a column label for the supplied dataframe."
+        )
+    elif len(df.columns) > 2 and column_data not in df.columns:
+        raise InputDataError(
+            f"{column_data} is not a column label for the supplied dataframe."
+        )
+    if len(df.columns) == 2:
+        if column_elements is None and column_data is None:
+            column_elements = df.columns[0]
+            column_data = df.columns[1]
+
+        elif column_elements in df.columns and column_data in df.columns:
+            pass
+
+        elif column_elements not in df.columns or column_data not in df.columns:
+            columns = list(df.columns)
+
+            if column_elements not in columns and column_data not in columns:
+                raise InputDataError("Invalid column labels")
+
+            elif column_data not in columns:
+                columns.remove(column_elements)
+                column_data = columns[0]
+
+            elif column_elements not in columns:
+                columns.remove(column_data)
+                column_elements = columns[0]
+
+    return column_elements, column_data

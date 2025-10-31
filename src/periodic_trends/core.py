@@ -1,24 +1,20 @@
 from __future__ import annotations
 
 import warnings
+from typing import TYPE_CHECKING
 
 import pandas as pd
 from bokeh.io import show as show_
-from bokeh.models import (
-    BasicTicker,
-    ColorBar,
-    ColumnDataSource,
-)
+from bokeh.models import BasicTicker, ColorBar, ColumnDataSource
 from bokeh.plotting import figure, output_file
 from bokeh.sampledata.periodic_table import elements  # type: ignore
 from bokeh.transform import dodge
 from matplotlib import cm
 from matplotlib.colors import to_hex
 from numpy import float64, isnan
-from periodic_trends._bokeh_tools import _color_scale_maker
 from pandas import options
 
-from typing import TYPE_CHECKING
+from periodic_trends._bokeh_tools import _color_scale_maker, _input_checker
 
 if TYPE_CHECKING:
     from matplotlib.colors import LinearSegmentedColormap
@@ -26,8 +22,8 @@ if TYPE_CHECKING:
 
 def plotter(
     df: pd.DataFrame,
-    column_elements: str,
-    column_data: str,
+    column_elements: str | pd.Index | None = None,
+    column_data: str | pd.Index | None = None,
     show: bool = True,
     output_filename: str | None = None,
     width: int = 1050,
@@ -133,6 +129,9 @@ def plotter(
         Bokeh figure object.
     """
 
+    # Checking input dataframe
+    column_elements, column_data = _input_checker(df, column_elements, column_data)
+
     options.mode.chained_assignment = None
 
     df = df.set_index(column_elements, drop=True)
@@ -157,17 +156,13 @@ def plotter(
 
     # Breaks out the lanthanoids and actinoids
     if extended:
-        count = 0
-        for i in range(56, 70):
+        for count, i in enumerate(range(56, 70)):
             elements.loc[i, "period"] = "La"
             elements.loc[i, "group"] = str(count + 4)
-            count += 1
 
-        count = 0
-        for i in range(88, 102):
+        for count, i in enumerate(range(88, 102)):
             elements.loc[i, "period"] = "Ac"
             elements.loc[i, "group"] = str(count + 4)
-            count += 1
 
     # Define matplotlib and bokeh color map
     color_scale, color_mapper = _color_scale_maker(
@@ -244,7 +239,7 @@ def plotter(
         y_range=list(reversed(period_label)),
         tools=["save"],
         title=title,
-    )  # type: ignore
+    )
     p.width = width
     p.height = height
     p.outline_line_color = None
@@ -311,4 +306,3 @@ def plotter(
         show_(p)
 
     return p
-
