@@ -2,6 +2,18 @@
 
 Python script to plot periodic trends as a heat map over the periodic table of elements.
 
+## Dependencies
+
+The script requires the following dependencies:
+
+- [Bokeh](http://bokeh.pydata.org/en/latest/)
+- [bokeh_sampledata](https://pypi.org/project/bokeh-sampledata)
+- [numpy](https://numpy.org/)
+- [pandas](http://pandas.pydata.org/)
+- [matplotlib](http://matplotlib.org/)
+
+These packages can be installed using [pip](https://pip.pypa.io/en/stable/) via `pip install -r requirements.txt` in the `periodic_trends` base directory.
+
 ## Usage
 
 This Python script (`periodic_trends.py`) can be used to plot a heat map over an image of the periodic table of elements for easy and automated visualization of periodic trends.
@@ -65,15 +77,3 @@ test=plotter(df, "Element", "Ionization Energy", print_data = True, cmap = cm.su
 ```
 
 ![plot4](example_images/plot4.png)
-
-## Dependencies
-
-The script requires the following dependencies:
-
-- [Bokeh](http://bokeh.pydata.org/en/latest/)
-- [bokeh_sampledata](https://pypi.org/project/bokeh-sampledata)
-- [numpy](https://numpy.org/)
-- [pandas](http://pandas.pydata.org/)
-- [matplotlib](http://matplotlib.org/)
-
-These packages can be installed using [pip](https://pip.pypa.io/en/stable/) via `pip install -r requirements.txt` in the `periodic_trends` base directory.
