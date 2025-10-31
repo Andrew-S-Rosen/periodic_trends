@@ -12,7 +12,7 @@ pip install git+https://github.com/Andrew-S-Rosen/periodic_trends.git
 
 This Python code can be used to plot a heat map over an image of the periodic table of elements for easy and automated visualization of periodic trends.
 
-A minimal example is as follows:
+A minimal example using an [example CSV file](https://github.com/Andrew-S-Rosen/periodic_trends/blob/master/example_data/ionization_energies.csv) is as follows:
 
 ```python
 from periodic_trends import plotter
