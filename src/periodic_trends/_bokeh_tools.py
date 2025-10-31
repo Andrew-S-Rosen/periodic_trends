@@ -1,12 +1,16 @@
 from __future__ import annotations
 
-import pandas as pd
+from typing import TYPE_CHECKING
+
 from bokeh.colors import RGB
 from bokeh.models import LinearColorMapper, LogColorMapper
 from matplotlib import cm
 from matplotlib.cm import ScalarMappable
 from matplotlib.colors import LinearSegmentedColormap, LogNorm, Normalize
-from numpy import ndarray
+
+if TYPE_CHECKING:
+    import pandas as pd
+    from numpy import ndarray
 
 
 def _color_scale_maker(
@@ -112,11 +116,11 @@ def _input_checker(
         raise InputDataError(
             "The supplied dataframe has more than 2 columns, but the columns to plot have not been assigned."
         )
-    elif len(df.columns) > 2 and column_elements not in df.columns:
+    if len(df.columns) > 2 and column_elements not in df.columns:
         raise InputDataError(
             f"{column_elements} is not a column label for the supplied dataframe."
         )
-    elif len(df.columns) > 2 and column_data not in df.columns:
+    if len(df.columns) > 2 and column_data not in df.columns:
         raise InputDataError(
             f"{column_data} is not a column label for the supplied dataframe."
         )
@@ -134,7 +138,7 @@ def _input_checker(
             if column_elements not in columns and column_data not in columns:
                 raise InputDataError("Invalid column labels")
 
-            elif column_data not in columns:
+            if column_data not in columns:
                 columns.remove(column_elements)
                 column_data = columns[0]
 
