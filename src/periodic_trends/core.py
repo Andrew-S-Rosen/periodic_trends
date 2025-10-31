@@ -1,6 +1,9 @@
+from __future__ import annotations
 
 import warnings
 
+import pandas as pd
+from bokeh.colors import RGB
 from bokeh.io import show as show_
 from bokeh.models import (
     BasicTicker,
@@ -10,81 +13,14 @@ from bokeh.models import (
     LogColorMapper,
 )
 from bokeh.plotting import figure, output_file
-from bokeh.sampledata.periodic_table import elements #type: ignore
+from bokeh.sampledata.periodic_table import elements  # type: ignore
 from bokeh.transform import dodge
-
-from matplotlib.cm import (
-    ScalarMappable,
-    )
 from matplotlib import cm
-from bokeh.colors import RGB
-from matplotlib.colors import LinearSegmentedColormap
-
-from matplotlib.colors import LogNorm, Normalize, to_hex
-import pandas as pd
+from matplotlib.cm import ScalarMappable
+from matplotlib.colors import LinearSegmentedColormap, LogNorm, Normalize, to_hex
+from numpy import float64, isnan, ndarray
 from pandas import options
-from numpy import isnan, float64, ndarray
 
-def _makeBokehColorPalette(cm_palette: LinearSegmentedColormap) -> tuple[list, bool]:
-    palette_rgb = (255 * cm_palette(range(256))).astype("int")
-    divergingPalette = cm_palette in [cm.coolwarm, cm.PiYG, cm.PRGn, #type: ignore
-                                      cm.BrBG, cm.PuOr, cm.RdGy, #type: ignore
-                                      cm.RdBu, cm.RdYlBu, cm.RdYlGn, #type: ignore
-                                      cm.Spectral, cm.bwr, cm.seismic, #type: ignore
-                                      cm.berlin, cm.managua, cm.vanimo] #type: ignore
-    return [RGB(*tuple(rgb)).to_hex() for rgb in palette_rgb], divergingPalette
-
-def _colorScaleMaker(data: pd.Series,
-                    cmap: LinearSegmentedColormap,
-                    log_scale: bool = False,
-                    lower_boundary: int | float | None = None,
-                    upper_boundary: int | float | None = None,
-                    ) -> tuple[ndarray, LogColorMapper | LinearColorMapper]:
-
-    bokeh_palette, divergingPalette = _makeBokehColorPalette(cmap)
-
-    data_min = data.min()
-    data_max = data.max()
-
-    if divergingPalette and lower_boundary is not None and upper_boundary is not None: #Forces the palette to remain centered on 0. May be broken if 0 is not in the range
-        if upper_boundary >= abs(lower_boundary):
-            lower_boundary = -upper_boundary
-        elif upper_boundary < abs(lower_boundary):
-            upper_boundary = -lower_boundary
-    elif divergingPalette and lower_boundary is None and upper_boundary is not None:
-        lower_boundary = -upper_boundary
-    elif divergingPalette and lower_boundary is not None and upper_boundary is None:
-        upper_boundary = -lower_boundary
-    elif divergingPalette and lower_boundary is None and upper_boundary is None:
-        if data_max >= abs(data_min):
-            lower_boundary = -data_max
-            upper_boundary = data_max
-        elif data_max < abs(data_min):
-            lower_boundary = data_min
-            upper_boundary = -data_min
-    elif not divergingPalette:
-        if upper_boundary is None:
-            upper_boundary = data_max
-        if lower_boundary is None:
-            lower_boundary = data_min
-    else:
-        raise ValueError("Something went wrong when determining the boundaries of the color palette.")
- 
-    if log_scale:
-        for datum in data:
-            if datum < 0:
-                raise ValueError(
-                    f"Entry for element {datum} is negative but log-scale is selected"
-                )
-        color_mapper = LogColorMapper(palette=bokeh_palette, low=lower_boundary, high=upper_boundary)
-        norm = LogNorm(vmin=lower_boundary, vmax=upper_boundary)
-    else:
-        color_mapper = LinearColorMapper(palette=bokeh_palette, low=lower_boundary, high=upper_boundary)
-        norm = Normalize(vmin=lower_boundary, vmax=upper_boundary)
-
-    color_scale = ScalarMappable(norm=norm, cmap=cmap).to_rgba(data.to_numpy(), alpha=None)
-
-    return color_scale, color_mapper
 
 def plotter(
     df: pd.DataFrame,
@@ -94,7 +30,7 @@ def plotter(
     output_filename: str | None = None,
     width: int = 1050,
     height: int = 600,
-    cmap: LinearSegmentedColormap = cm.plasma, #type: ignore
+    cmap: LinearSegmentedColormap = cm.plasma,  # type: ignore
     alpha: float = 0.65,
     extended: bool = True,
     periods_remove: list[int] | None = None,
@@ -102,7 +38,7 @@ def plotter(
     log_scale: bool = False,
     cbar_x: int = 0,
     cbar_y: int = 0,
-    cbar_height: int | None= None,
+    cbar_height: int | None = None,
     cbar_ticks: int = 10,
     cbar_title: str | None = None,
     cbar_standoff: int = 12,
@@ -112,14 +48,13 @@ def plotter(
     under_color: str = "#140F0E",
     over_value: float | None = None,
     over_color: str = "#140F0E",
-    color_max: int | float | None = None,
-    color_min: int | float | None = None,
+    color_max: float | None = None,
+    color_min: float | None = None,
     special_elements: list[str] | None = None,
     special_color: str = "#6F3023",
     print_data: bool = False,
     float_decimals: int = 1,
     data_unit: str | None = None,
-    tools: list[str] = ["save"],
     title: str | None = None,
 ) -> figure:
     """
@@ -187,8 +122,6 @@ def plotter(
         Whether the value of the data will be plotted as a number.
     data_unit: str
         Specifies a unit when the data is printed to the graph.
-    tools: list[str]
-        Specifies the tools to be included at the top of the figure.
     title: str
         Specifies the title of the graph.
 
@@ -200,8 +133,7 @@ def plotter(
 
     options.mode.chained_assignment = None
 
-
-    df = df.set_index(column_elements, drop = True)
+    df = df.set_index(column_elements, drop=True)
     df = df.reindex(elements.symbol)
 
     # Define number of and groups
@@ -236,15 +168,17 @@ def plotter(
             count += 1
 
     # Define matplotlib and bokeh color map
-    color_scale, color_mapper = _colorScaleMaker(df[column_data], #type: ignore
-                                                 cmap,
-                                                 log_scale=log_scale, 
-                                                 lower_boundary=color_min, 
-                                                 upper_boundary=color_max)
+    color_scale, color_mapper = _colorScaleMaker(
+        df[column_data],  # type: ignore
+        cmap,
+        log_scale=log_scale,
+        lower_boundary=color_min,
+        upper_boundary=color_max,
+    )
 
     # Set blank color
     color_list = [blank_color] * len(elements)
-    
+
     # Compare elements in dataset with elements in periodic table
     for i, data_element in enumerate(df.index):
         element_entry = elements.symbol[
@@ -254,30 +188,35 @@ def plotter(
             element_index = element_entry.index[0]
         else:
             warnings.warn("Invalid chemical symbol: " + data_element)
-        if color_list[element_index] != blank_color: #type: ignore
+        if color_list[element_index] != blank_color:  # type: ignore
             warnings.warn("Multiple entries for element " + data_element)
         elif isnan(df[column_data].iloc[i]):
-            color_list[element_index] = blank_color #type: ignore
+            color_list[element_index] = blank_color  # type: ignore
         elif under_value is not None and df[column_data].iloc[i] <= under_value:
-            color_list[element_index] = under_color #type: ignore
+            color_list[element_index] = under_color  # type: ignore
         elif over_value is not None and df[column_data].iloc[i] >= over_value:
-            color_list[element_index] = over_color #type: ignore
+            color_list[element_index] = over_color  # type: ignore
         else:
-            color_list[element_index] = to_hex(color_scale[i]) #type: ignore
+            color_list[element_index] = to_hex(color_scale[i])  # type: ignore
 
     if special_elements:
         for k, v in elements["symbol"].iteritems():
             if v in special_elements:
                 color_list[k] = special_color
 
-    #Formatting of data_text
+    # Formatting of data_text
     if type(data_unit) is str:
         if df[column_data].dtype == float64:
             float_formatter = "{:." + str(float_decimals) + "f}"
-            data_text = [float_formatter.format(x) + data_unit if not isnan(x) else x for x in df[column_data]]
+            data_text = [
+                float_formatter.format(x) + data_unit if not isnan(x) else x
+                for x in df[column_data]
+            ]
         else:
-            data_text = [str(x) + data_unit if not isnan(x) else x for x in df[column_data]]
-        
+            data_text = [
+                str(x) + data_unit if not isnan(x) else x for x in df[column_data]
+            ]
+
     else:
         if df[column_data].dtype == float64:
             float_formatter = "{:." + str(float_decimals) + "f}"
@@ -293,18 +232,23 @@ def plotter(
             sym=elements["symbol"],
             atomic_number=elements["atomic number"],
             type_color=color_list,
-            data_text = data_text
+            data_text=data_text,
         )
     )
 
     # Plot the periodic table
-    p = figure(x_range=group_range, y_range=list(reversed(period_label)), tools= tools, title=title) #type: ignore
+    p = figure(
+        x_range=group_range,
+        y_range=list(reversed(period_label)),
+        tools=["save"],
+        title=title,
+    )  # type: ignore
     p.width = width
     p.height = height
     p.outline_line_color = None
     p.background_fill_color = None
     p.border_fill_color = None
-    p.toolbar_location =None
+    p.toolbar_location = None
     p.rect("group", "period", 0.9, 0.9, source=source, alpha=alpha, color="type_color")
     p.axis.visible = False
     text_props = {
@@ -336,20 +280,20 @@ def plotter(
         }
         data_x = dodge("group", 0.4, range=p.x_range)
         data_y = dodge("period", -0.3, range=p.y_range)
-        p.text(x=data_x, y = data_y, text = "data_text", text_font_size="8pt", **text_props)
+        p.text(x=data_x, y=data_y, text="data_text", text_font_size="8pt", **text_props)
 
     color_bar = ColorBar(
         color_mapper=color_mapper,
         ticker=BasicTicker(desired_num_ticks=cbar_ticks),
         border_line_color=None,
         label_standoff=cbar_standoff,
-        location = (cbar_x, cbar_y),
+        location=(cbar_x, cbar_y),
         orientation="vertical",
         scale_alpha=alpha,
         major_label_text_font_size=f"{cbar_fontsize}pt",
-        display_high = df[column_data].max(), #type: ignore
-        display_low = df[column_data].min(), #type: ignore
-        title = cbar_title,
+        display_high=df[column_data].max(),  # type: ignore
+        display_low=df[column_data].min(),  # type: ignore
+        title=cbar_title,
     )
 
     if cbar_height is not None:
@@ -365,3 +309,88 @@ def plotter(
         show_(p)
 
     return p
+
+
+def _makeBokehColorPalette(cm_palette: LinearSegmentedColormap) -> tuple[list, bool]:
+    palette_rgb = (255 * cm_palette(range(256))).astype("int")
+    divergingPalette = cm_palette in [
+        cm.coolwarm,
+        cm.PiYG,
+        cm.PRGn,  # type: ignore
+        cm.BrBG,
+        cm.PuOr,
+        cm.RdGy,  # type: ignore
+        cm.RdBu,
+        cm.RdYlBu,
+        cm.RdYlGn,  # type: ignore
+        cm.Spectral,
+        cm.bwr,
+        cm.seismic,  # type: ignore
+        cm.berlin,
+        cm.managua,
+        cm.vanimo,
+    ]  # type: ignore
+    return [RGB(*tuple(rgb)).to_hex() for rgb in palette_rgb], divergingPalette
+
+
+def _colorScaleMaker(
+    data: pd.Series,
+    cmap: LinearSegmentedColormap,
+    log_scale: bool = False,
+    lower_boundary: int | None = None,
+    upper_boundary: int | None = None,
+) -> tuple[ndarray, LogColorMapper | LinearColorMapper]:
+    bokeh_palette, divergingPalette = _makeBokehColorPalette(cmap)
+
+    data_min = data.min()
+    data_max = data.max()
+
+    if (
+        divergingPalette and lower_boundary is not None and upper_boundary is not None
+    ):  # Forces the palette to remain centered on 0. May be broken if 0 is not in the range
+        if upper_boundary >= abs(lower_boundary):
+            lower_boundary = -upper_boundary
+        elif upper_boundary < abs(lower_boundary):
+            upper_boundary = -lower_boundary
+    elif divergingPalette and lower_boundary is None and upper_boundary is not None:
+        lower_boundary = -upper_boundary
+    elif divergingPalette and lower_boundary is not None and upper_boundary is None:
+        upper_boundary = -lower_boundary
+    elif divergingPalette and lower_boundary is None and upper_boundary is None:
+        if data_max >= abs(data_min):
+            lower_boundary = -data_max
+            upper_boundary = data_max
+        elif data_max < abs(data_min):
+            lower_boundary = data_min
+            upper_boundary = -data_min
+    elif not divergingPalette:
+        if upper_boundary is None:
+            upper_boundary = data_max
+        if lower_boundary is None:
+            lower_boundary = data_min
+    else:
+        raise ValueError(
+            "Something went wrong when determining the boundaries of the color palette."
+        )
+
+    if log_scale:
+        for datum in data:
+            if datum < 0:
+                raise ValueError(
+                    f"Entry for element {datum} is negative but log-scale is selected"
+                )
+        color_mapper = LogColorMapper(
+            palette=bokeh_palette, low=lower_boundary, high=upper_boundary
+        )
+        norm = LogNorm(vmin=lower_boundary, vmax=upper_boundary)
+    else:
+        color_mapper = LinearColorMapper(
+            palette=bokeh_palette, low=lower_boundary, high=upper_boundary
+        )
+        norm = Normalize(vmin=lower_boundary, vmax=upper_boundary)
+
+    color_scale = ScalarMappable(norm=norm, cmap=cmap).to_rgba(
+        data.to_numpy(), alpha=None
+    )
+
+    return color_scale, color_mapper
