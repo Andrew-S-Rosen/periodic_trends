@@ -18,18 +18,11 @@ A minimal example is as follows:
 from periodic_trends import plotter
 import pandas as pd
 
-df = pd.read_csv("ionization_energies.csv", names = ["Element", "Ionization Energy"])
+df = pd.read_csv("ionization_energies.csv", names=["Element", "Ionization Energy"])
 plotter(df, "Element", "Ionization Energy")
 ```
 
 ![plot1](example_images/plot1.png)
-
-If it doesn't show up the first time (sometimes happens in Jupyter Notebooks), try calling the following first:
-
-```python
-from bokeh.io import output_notebook
-output_notebook()
-```
 
 The `plotter()` function reads a pandas DataFrame containing periodic trend data. DataFrames can be read from a wide range of data formats, such as csv and xlsx. The `plotter()` takes three required arguments, the first being the DataFrame itself, the second is the name of the column containing the atom symbols of your elements, and the last being the name of column of the values you wish to plot.
 
@@ -41,7 +34,7 @@ There are numerous optional arguments, which can be used to modify the appearanc
 from periodic_trends import plotter
 import pandas as pd
 
-df = pd.read_csv("ionization_energies.csv", names = ["Element", "Ionization Energy"])
+df = pd.read_csv("ionization_energies.csv", names=["Element", "Ionization Energy"])
 plotter(df, "Element", "Ionization Energy", log_scale=True)
 ```
 
@@ -52,8 +45,16 @@ from periodic_trends import plotter
 import pandas as pd
 from matplotlib import cm
 
-df = pd.read_csv("ionization_energies.csv", names = ["Element", "Ionization Energy"])
-plotter(df, "Element", "Ionization Energy", cmap=cm.viridis, alpha=0.7, extended=False, periods_remove=[1])
+df = pd.read_csv("ionization_energies.csv", names=["Element", "Ionization Energy"])
+plotter(
+    df,
+    "Element",
+    "Ionization Energy",
+    cmap=cm.viridis,
+    alpha=0.7,
+    extended=False,
+    periods_remove=[1],
+)
 ```
 
 ![plot3](example_images/plot3.png)
@@ -63,8 +64,19 @@ import pandas as pd
 from periodic_trends import plotter
 from matplotlib import cm
 
-df = pd.read_csv("ionization_energies.csv", names = ["Element", "Ionization Energy"])
-test=plotter(df, "Element", "Ionization Energy", print_data = True, cmap = cm.summer)
+df = pd.read_csv("ionization_energies.csv", names=["Element", "Ionization Energy"])
+test = plotter(df, "Element", "Ionization Energy", print_data=True, cmap=cm.summer)
 ```
 
 ![plot4](example_images/plot4.png)
+
+## Troubleshooting
+
+
+If the plot doesn't show up the first time (sometimes happens in Jupyter Notebooks), try calling the following first:
+
+```python
+from bokeh.io import output_notebook
+
+output_notebook()
+```

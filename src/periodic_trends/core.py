@@ -187,9 +187,9 @@ def plotter(
         if not element_entry.empty:
             element_index = element_entry.index[0]
         else:
-            warnings.warn("Invalid chemical symbol: " + data_element)
+            warnings.warn("Invalid chemical symbol: " + data_element, stacklevel=2)
         if color_list[element_index] != blank_color:  # type: ignore
-            warnings.warn("Multiple entries for element " + data_element)
+            warnings.warn("Multiple entries for element " + data_element, stacklevel=2)
         elif isnan(df[column_data].iloc[i]):
             color_list[element_index] = blank_color  # type: ignore
         elif under_value is not None and df[column_data].iloc[i] <= under_value:
@@ -226,14 +226,14 @@ def plotter(
 
     # Define figure properties for visualizing data
     source = ColumnDataSource(
-        data=dict(
-            group=[str(x) for x in elements["group"]],
-            period=[str(y) for y in elements["period"]],
-            sym=elements["symbol"],
-            atomic_number=elements["atomic number"],
-            type_color=color_list,
-            data_text=data_text,
-        )
+        data={
+            "group": [str(x) for x in elements["group"]],
+            "period": [str(y) for y in elements["period"]],
+            "sym": elements["symbol"],
+            "atomic_number": elements["atomic number"],
+            "type_color": color_list,
+            "data_text": data_text,
+        }
     )
 
     # Plot the periodic table
