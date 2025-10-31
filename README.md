@@ -35,10 +35,7 @@ The `plotter()` function reads a pandas DataFrame containing periodic trend data
 
 After the `periodic_trends.py` script is run, it will show the plot in your web browser. To save the image, simply click the save icon that appears in the web browser figure, or use [Bokeh to export it as a .png or .svg file](https://docs.bokeh.org/en/latest/docs/user_guide/output/export.html).
 
-There are numerous optional arguments, which can be used to modify the appearance of the figure. The full argument list is below:
-https://github.com/Andrew-S-Rosen/periodic_trends/blob/1f374d8f8a160be0e361acc965282b63341c53e4/periodic_trends.py#L89-L192
-
-A couple of examples using various optional keyword arguments are as follows:
+There are numerous optional arguments, which can be used to modify the appearance of the figure. A couple of examples using various optional keyword arguments are as follows:
 
 ```python
 from periodic_trends import plotter
