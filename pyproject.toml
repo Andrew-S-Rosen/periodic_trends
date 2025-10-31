@@ -1,0 +1,135 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "periodic_trends"
+description="Python script to plot periodic trends as a heat map over the periodic table of elements."
+version = "1.0.0"
+readme = "README.md"
+license = { text = "BSD-3" }
+authors = [{ name = "Andrew S. Rosen"}]
+keywords = ["Chemistry"]
+classifiers = [
+    "Development Status :: 6 - Mature",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: Unix",
+    "Operating System :: MacOS",
+]
+requires-python = ">=3.9"
+dependencies = ["bokeh", "bokeh_sampledata", "numpy", "pandas", "matplotlib"]
+
+[project.urls]
+repository = "https://github.com/Andrew-S-Rosen/periodic_trends"
+
+[tool.setuptools.package-data]
+template = ["py.typed"]
+
+[tool.black]
+exclude = '''
+/(
+    \.git
+  | \.tox
+)/
+'''
+skip-magic-trailing-comma = true
+
+[tool.isort]
+profile = 'black'
+skip_gitignore = true
+
+[tool.coverage.run]
+source = ["src"]
+
+[tool.coverage.report]
+exclude_also = [
+    "if TYPE_CHECKING:",
+    "if __name__ == .__main__.:",
+    "except ImportError",
+]
+
+[tool.ruff]
+lint.select = [
+  "A",      # flake8-builtins
+  "ARG",    # flake8-unused-arguments
+  "ASYNC",  # flake8-async
+  "ASYNC1", # flake8-async1
+  "B",      # flake8-bugbear
+  "C4",     # flake8-comprehensions
+  "DTZ",    # flake8-datetimez
+  "E",      # pycodestyle error
+  "EXE",    # flake8-executable
+  "F",      # pyflakes
+  "FA",     # flake8-future-annotations
+  "FLY",    # flynt
+  "I",      # isort
+  "ICN",    # flake8-import-conventions
+  "INT",    # flake8-gettext
+  "ISC",    # flake8-implicit-str-concat
+  "LOG",    # flake8-logging
+  "NPY",    # numpy-specific rules
+  "PD",     # pandas-vet
+  "PERF",   # perflint
+  "PIE",    # flake8-pie
+  "PL",     # pylint
+  "PT",     # flake8-pytest-style
+  "PTH",    # flake8-use-pathlib
+  "PYI",    # flake8-pyi
+  "Q",      # flake8-quotes
+  "RET",    # flake8-return
+  "RSE",    # flake8-raise
+  "RUF",    # Ruff-specific rules
+  "SIM",    # flake8-simplify
+  "SLOT",   # flake8-slots
+  "T20",    # flake8-print
+  "TCH",    # flake8-type-checking
+  "TID",    # flake8-tidy-imports
+  "UP",     # pyupgrade
+  "W",      # pycodestyle warning
+  "YTT",    # flake8-2020
+]
+lint.ignore = [
+  "E501",   # Line too long
+  "ISC001",   # single-line-implicit-string-concatenation
+  "PLR",    # Design related pylint codes
+  "PERF203",  # try-except-in-loop
+  "RET505", # Unnecessary `elif` after `return`
+  "PLC0415", # `import` should be at the top-level of a file
+]
+src = ["src"]
+lint.unfixable = [
+  "T20",  # Removes print statements
+  "F841", # Removes unused variables
+]
+lint.pydocstyle.convention = "numpy"
+lint.isort.known-first-party = ["periodic_trends"]
+lint.isort.required-imports = ["from __future__ import annotations"]
+lint.isort.split-on-trailing-comma=false
+extend-include = ["*.ipynb"]
+
+[tool.ruff.format]
+docstring-code-format = true
+skip-magic-trailing-comma = true
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+"tests/**" = ["ANN", "ARG", "D", "E402", "PTH", "S101"]
+
+[tool.docformatter]
+pre-summary-newline = true
+black = true
+
+[tool.mypy]
+ignore_missing_imports = true
+namespace_packages = true
+explicit_package_bases = true
+no_implicit_optional = false
+disable_error_code = "annotation-unchecked"
