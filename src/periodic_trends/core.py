@@ -1,24 +1,20 @@
 from __future__ import annotations
 
 import warnings
+from typing import TYPE_CHECKING
 
 import pandas as pd
 from bokeh.io import show as show_
-from bokeh.models import (
-    BasicTicker,
-    ColorBar,
-    ColumnDataSource,
-)
+from bokeh.models import BasicTicker, ColorBar, ColumnDataSource
 from bokeh.plotting import figure, output_file
 from bokeh.sampledata.periodic_table import elements  # type: ignore
 from bokeh.transform import dodge
 from matplotlib import cm
 from matplotlib.colors import to_hex
 from numpy import float64, isnan
-from periodic_trends._bokeh_tools import _color_scale_maker
 from pandas import options
 
-from typing import TYPE_CHECKING
+from periodic_trends._bokeh_tools import _color_scale_maker
 
 if TYPE_CHECKING:
     from matplotlib.colors import LinearSegmentedColormap
@@ -311,4 +307,3 @@ def plotter(
         show_(p)
 
     return p
-
