@@ -160,17 +160,14 @@ def plotter(
         period_label.append("Ac")
         elements["period"] = elements["period"].astype(str)
 
-        count = 0
-        for i in range(56, 70):
-            elements.loc[i, "period"] = "La"
-            elements.loc[i, "group"] = str(count + 4)
+        for i, z in enumerate(range(56, 70)):
+            elements.loc[z, "period"] = "La"
+            elements.loc[z, "group"] = str(i + 4)
             count += 1
 
-        count = 0
-        for i in range(88, 102):
-            elements.loc[i, "period"] = "Ac"
-            elements.loc[i, "group"] = str(count + 4)
-            count += 1
+        for i, z in enumerate(range(88, 102)):
+            elements.loc[z, "period"] = "Ac"
+            elements.loc[z, "group"] = str(i + 4)
 
     # Rescale the canvas to account for removed periods/groups
     if rescale_canvas:
