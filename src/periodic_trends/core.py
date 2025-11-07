@@ -3,7 +3,7 @@ from __future__ import annotations
 import warnings
 
 import pandas as pd
-from bokeh.io import show as show_
+from bokeh.io import show as show_, save as save_
 from bokeh.models import (
     BasicTicker,
     ColorBar,
@@ -309,6 +309,8 @@ def plotter(
 
     if show:
         show_(p)
+    elif output_filename is not None:
+        save_(p)
 
     return p
 
