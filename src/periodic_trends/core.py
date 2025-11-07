@@ -4,7 +4,7 @@ import warnings
 from typing import TYPE_CHECKING
 
 import pandas as pd
-from bokeh.io import save as save_
+from bokeh.io import save
 from bokeh.io import show as show_
 from bokeh.models import BasicTicker, ColorBar, ColumnDataSource
 from bokeh.plotting import figure, output_file
@@ -311,6 +311,6 @@ def plotter(
     if show:
         show_(p)
     elif output_filename is not None:
-        save_(p)
+        save(p)
 
     return p
