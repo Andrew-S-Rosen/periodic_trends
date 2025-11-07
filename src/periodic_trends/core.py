@@ -30,13 +30,14 @@ def plotter(
     column_data: str,
     show: bool = True,
     output_filename: str | None = None,
-    width: int | None = None,
-    height: int | None = None,
+    width: int = 1050,
+    height: int = 600,
     cmap: LinearSegmentedColormap = cm.plasma,  # type: ignore
     alpha: float = 0.65,
     extended: bool = True,
     periods_remove: list[int] | None = None,
     groups_remove: list[int] | None = None,
+    rescale_canvas: bool = True,
     log_scale: bool = False,
     cbar_x: int = 0,
     cbar_y: int = 0,
@@ -88,6 +89,8 @@ def plotter(
         Period numbers to be removed from the plot.
     groups_remove: list[int]
         Group numbers to be removed from the plot.
+    rescale_canvas_to_fit: bool;
+        If True, rescale the canvas to account for removed periods/rows.
     log_scale: bool
         If True, the colorbar will be logarithmic.
     cbar_x: int
@@ -169,10 +172,10 @@ def plotter(
             elements.loc[i, "group"] = str(count + 4)
             count += 1
 
-    if height is None:
-        height = 600 * len(period_label) // 10
-    if width is None:
-        width = 1050 * (len(group_range) + 2) // 20
+    # Rescale the canvas to account for removed periods/groups
+    if rescale_canvas:
+        height = height * len(period_label) // 10
+        width = width * (len(group_range) + 2) // 20
 
     # Define matplotlib and bokeh color map
     color_scale, color_mapper = _color_scale_maker(
