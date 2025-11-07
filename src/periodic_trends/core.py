@@ -90,7 +90,7 @@ def plotter(
     groups_remove: list[int]
         Group numbers to be removed from the plot.
     rescale_canvas_to_fit: bool;
-        If True, rescale the canvas to account for removed periods/rows.
+        If True, rescale the canvas to account for removed periods/groups.
     log_scale: bool
         If True, the colorbar will be logarithmic.
     cbar_x: int
