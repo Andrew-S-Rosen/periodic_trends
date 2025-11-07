@@ -1,24 +1,20 @@
 from __future__ import annotations
 
 import warnings
+from typing import TYPE_CHECKING
 
 import pandas as pd
 from bokeh.io import show as show_
-from bokeh.models import (
-    BasicTicker,
-    ColorBar,
-    ColumnDataSource,
-)
+from bokeh.models import BasicTicker, ColorBar, ColumnDataSource
 from bokeh.plotting import figure, output_file
 from bokeh.sampledata.periodic_table import elements  # type: ignore
 from bokeh.transform import dodge
 from matplotlib import cm
 from matplotlib.colors import to_hex
 from numpy import float64, isnan
-from periodic_trends._bokeh_tools import _color_scale_maker
 from pandas import options
 
-from typing import TYPE_CHECKING
+from periodic_trends._bokeh_tools import _color_scale_maker
 
 if TYPE_CHECKING:
     from matplotlib.colors import LinearSegmentedColormap
@@ -37,6 +33,7 @@ def plotter(
     extended: bool = True,
     periods_remove: list[int] | None = None,
     groups_remove: list[int] | None = None,
+    rescale_canvas: bool = True,
     log_scale: bool = False,
     cbar_x: int = 0,
     cbar_y: int = 0,
@@ -88,6 +85,8 @@ def plotter(
         Period numbers to be removed from the plot.
     groups_remove: list[int]
         Group numbers to be removed from the plot.
+    rescale_canvas_to_fit: bool;
+        If True, rescale the canvas to account for removed periods/groups.
     log_scale: bool
         If True, the colorbar will be logarithmic.
     cbar_x: int
@@ -150,24 +149,25 @@ def plotter(
         for pr in periods_remove:
             period_label.remove(str(pr))
 
-    period_label.append("blank")
-    period_label.append("La")
-    period_label.append("Ac")
-    elements["period"] = elements["period"].astype(str)
-
     # Breaks out the lanthanoids and actinoids
     if extended:
-        count = 0
-        for i in range(56, 70):
-            elements.loc[i, "period"] = "La"
-            elements.loc[i, "group"] = str(count + 4)
-            count += 1
+        period_label.append("blank")
+        period_label.append("La")
+        period_label.append("Ac")
+        elements["period"] = elements["period"].astype(str)
 
-        count = 0
-        for i in range(88, 102):
-            elements.loc[i, "period"] = "Ac"
-            elements.loc[i, "group"] = str(count + 4)
-            count += 1
+        for i, z in enumerate(range(56, 70)):
+            elements.loc[z, "period"] = "La"
+            elements.loc[z, "group"] = str(i + 4)
+
+        for i, z in enumerate(range(88, 102)):
+            elements.loc[z, "period"] = "Ac"
+            elements.loc[z, "group"] = str(i + 4)
+
+    # Rescale the canvas to account for removed periods/groups
+    if rescale_canvas:
+        height = height * len(period_label) // 10
+        width = width * (len(group_range) + 2) // 20
 
     # Define matplotlib and bokeh color map
     color_scale, color_mapper = _color_scale_maker(
@@ -311,4 +311,3 @@ def plotter(
         show_(p)
 
     return p
-
