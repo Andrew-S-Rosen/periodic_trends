@@ -30,8 +30,8 @@ def plotter(
     column_data: str,
     show: bool = True,
     output_filename: str | None = None,
-    width: int = 1050,
-    height: int = 600,
+    width: int | None = None,
+    height: int | None = None,
     cmap: LinearSegmentedColormap = cm.plasma,  # type: ignore
     alpha: float = 0.65,
     extended: bool = True,
@@ -150,13 +150,13 @@ def plotter(
         for pr in periods_remove:
             period_label.remove(str(pr))
 
-    period_label.append("blank")
-    period_label.append("La")
-    period_label.append("Ac")
-    elements["period"] = elements["period"].astype(str)
-
     # Breaks out the lanthanoids and actinoids
     if extended:
+        period_label.append("blank")
+        period_label.append("La")
+        period_label.append("Ac")
+        elements["period"] = elements["period"].astype(str)
+
         count = 0
         for i in range(56, 70):
             elements.loc[i, "period"] = "La"
@@ -168,6 +168,11 @@ def plotter(
             elements.loc[i, "period"] = "Ac"
             elements.loc[i, "group"] = str(count + 4)
             count += 1
+
+    if height is None:
+        height = 600 * len(period_label) // 10
+    if width is None:
+        width = 1050 * (len(group_range) + 2) // 20
 
     # Define matplotlib and bokeh color map
     color_scale, color_mapper = _color_scale_maker(
