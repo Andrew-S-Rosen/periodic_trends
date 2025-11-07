@@ -1,15 +1,16 @@
 from __future__ import annotations
 
-import pandas as pd
+from typing import TYPE_CHECKING
+
 from bokeh.colors import RGB
-from bokeh.models import (
-    LinearColorMapper,
-    LogColorMapper,
-)
+from bokeh.models import LinearColorMapper, LogColorMapper
 from matplotlib import cm
 from matplotlib.cm import ScalarMappable
 from matplotlib.colors import LinearSegmentedColormap, LogNorm, Normalize
-from numpy import  ndarray
+
+if TYPE_CHECKING:
+    import pandas as pd
+    from numpy import ndarray
 
 
 def _color_scale_maker(
@@ -74,6 +75,7 @@ def _color_scale_maker(
 
     return color_scale, color_mapper
 
+
 def _make_bokeh_color_palette(cm_palette: LinearSegmentedColormap) -> tuple[list, bool]:
     palette_rgb = (255 * cm_palette(range(256))).astype("int")
     divergingPalette = cm_palette in [
@@ -94,4 +96,3 @@ def _make_bokeh_color_palette(cm_palette: LinearSegmentedColormap) -> tuple[list
         cm.vanimo,
     ]  # type: ignore
     return [RGB(*tuple(rgb)).to_hex() for rgb in palette_rgb], divergingPalette
-
