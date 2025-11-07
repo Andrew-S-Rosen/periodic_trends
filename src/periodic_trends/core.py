@@ -159,7 +159,6 @@ def plotter(
         for i, z in enumerate(range(56, 70)):
             elements.loc[z, "period"] = "La"
             elements.loc[z, "group"] = str(i + 4)
-            count += 1
 
         for i, z in enumerate(range(88, 102)):
             elements.loc[z, "period"] = "Ac"
